@@ -9,5 +9,5 @@ Container::Container(void)
 // Date member function
 int Container::getlength(void)
 {
-    return: m_length;
+    return m_length;
 }

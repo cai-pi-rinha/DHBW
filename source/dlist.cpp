@@ -1,11 +1,11 @@
 #include "dlist.hpp"
- 
+
 // constructor
 Dlist::Dlist(void)
 {
-	
+
 }
- 
+
 // Date member function
 virtual int remove(int)
 {}
@@ -32,3 +32,4 @@ void* Dlist::operator [](int index)
 {
 	// iterate through the list until entry number "index"
 }
+
