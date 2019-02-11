@@ -4,7 +4,8 @@
 class Dlist : public Container
 {
 private:
-
+	Dnode* start_of_chain;
+	Dnode* end_of_chain;
 
 public:
     Dlist(void);

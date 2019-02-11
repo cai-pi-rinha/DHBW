@@ -1,21 +1,23 @@
 #include "dlist.hpp"
+#include "dnode.hpp"
 
 // constructor
 Dlist::Dlist(void)
 {
-
+	start_of_chain = null;
+	end_of_chain = null;
 }
 
 // Date member function
-virtual int remove(int)
+virtual int Dlist::remove(int)
 {}
 
-virtual int insert(void* obj)
+virtual int Dlist::insert(void* obj)
 {
 	insertlast(obj);
 }
 
-virtual int create(void)
+virtual int Dlist::create(void)
 {}
 
 int Dlist::insertfirst(void* obj)
@@ -26,6 +28,7 @@ int Dlist::insertfirst(void* obj)
 int Dlist::insertlast(void* obj)
 {
 	// ...
+	end_of_chain->
 }
 
 void* Dlist::operator [](int index)
