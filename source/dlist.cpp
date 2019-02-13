@@ -29,7 +29,7 @@ int Dlist::insertfirst(void* obj)   /** insert a new object as first element of 
 	 *      payload         = obj
 	 * 3) change start_of_chain to address of dnode-object
 	 */
-    new Dnode obj_to_insert(obj, NULL, start_of_chain);
+    Dnode* obj_to_insert = new Dnode(obj, NULL, start_of_chain);
     start_of_chain = &obj_to_insert;
 }
 
