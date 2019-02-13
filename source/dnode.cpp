@@ -38,8 +38,13 @@ int Dnode::insert_before(void* obj)
 	 * 2) change arguments of this object:
 	 *      prev-pointer    = created object
 	 */
-    Dnode* obj_to_insert    = new Dnode(obj, this->prev, this);
-    this->prev              = obj_to_insert;
+    if(this->prev == NULL)  /* quit if this is the first object in the row -> !start_of_list pointer needs to be updated! */
+        return -1;
+    else
+    {
+        Dnode* obj_to_insert    = new Dnode(obj, this->prev, this);
+        this->prev              = obj_to_insert;
+    }
 
     return 0;
 }
@@ -47,8 +52,14 @@ int Dnode::insert_before(void* obj)
 int Dnode::insert_after(void* obj)
 {
     /* compare insert_before() */
-    Dnode* obj_to_insert    = new Dnode(obj, this, this->next);
-    this->next              = obj_to_insert;
+
+    if(this->next == NULL)
+        return -1;
+    else
+    {
+        Dnode* obj_to_insert    = new Dnode(obj, this, this->next);
+        this->next              = obj_to_insert;
+    }
 
     return 0;
 }
