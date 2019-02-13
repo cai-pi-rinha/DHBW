@@ -1,6 +1,8 @@
 #ifndef DLIST_H
 #define DLIST_H
 
+#include "dnode.hpp"
+
 class Dlist : public Container
 {
 private:
