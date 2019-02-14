@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 //Testprogramm
 
 #include "string.hpp"
@@ -165,4 +164,3 @@ int main()
 		int iLen = rccoStr.Length();
 	}	*/
 	return 0;
-
