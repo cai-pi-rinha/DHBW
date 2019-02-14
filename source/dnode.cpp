@@ -24,6 +24,13 @@ Dnode::~Dnode(void) /** delete the current element INCLUDING its payload */
     prev->next          = next;
 }
 
+Dnode* Dnode::get_next(void)
+{return next;}
+Dnode* Dnode::get_prev(void)
+{return prev;}
+void* Dnode::get_payload(void)
+{return payload;}
+
 int Dnode::remove(void)   /** remove the payload of this element */
 {
     /* invoke the destructor of payload; might cause troubles, if the payload-element has no destructor */
