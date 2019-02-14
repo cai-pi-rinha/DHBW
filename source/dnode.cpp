@@ -31,13 +31,13 @@ Dnode* Dnode::get_prev(void)
 void* Dnode::get_payload(void)
 {return payload;}
 
-int Dnode::remove(void)   /** remove the payload of this element */
+void* Dnode::remove(void)   /** remove the link between this element and the actual payload */
 {
-    /* invoke the destructor of payload; might cause troubles, if the payload-element has no destructor */
-    delete this.payload;
+    /* remove the link between Dnode and the actual element; return the elements address to the user to invoke a delete command */
+    void* temp = this.payload;
     this.payload = NULL;
 
-    return 0;
+    return this.payload;
 }
 
 int Dnode::insert_before(void* obj)  /** insert a new element in front of the currently selected element */

@@ -19,7 +19,7 @@ public:
 	Dnode* get_prev(void);
 	void* get_payload(void);
 
-	int remove(void);
+	void* remove(void);
 	int insert_before(void* obj);
 	int insert_after(void* obj);
 };
