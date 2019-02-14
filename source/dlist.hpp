@@ -6,8 +6,8 @@
 class Dlist : public Container
 {
 private:
-	Dnode* start_of_chain;
-	Dnode* end_of_chain;
+	Dnode start_of_chain; /* start and end of chain as constant ?? */
+	Dnode end_of_chain;
 	/* get_first() */
 
 public:

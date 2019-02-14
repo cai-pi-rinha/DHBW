@@ -4,8 +4,12 @@
 // constructor
 Dlist::Dlist(void)
 {
-	start_of_chain = NULL;
-	end_of_chain = NULL;
+	start_of_chain.prev     = NULL;
+	start_of_chain.next     = NULL; /* will point on first element of list */
+	start_of_chain.payload  = NULL;
+	end_of_chain.prev       = NULL; /* will point on last element of list */
+	end_of_chain.next       = NULL;
+	end_of_chain.payload    = NULL;
 }
 
 // Date member function
@@ -22,21 +26,12 @@ virtual int Dlist::create(void)
 
 int Dlist::insertfirst(void* obj)   /** insert a new object as first element of the list */
 {
-	/* 1) go to start of list -> pointer of start_of_chain
-	 * 2) create dnode-object and configure:
-	 *      prev-pointer    = NULL, as it is going to be the first element in the list;
-	 *      next-pointer    = start_of_chain;
-	 *      payload         = obj
-	 * 3) change start_of_chain to address of dnode-object
-	 */
-    Dnode* obj_to_insert = new Dnode(obj, NULL, start_of_chain);
-    start_of_chain = &obj_to_insert;
+    start_of_chain.insert_after(obj);
 }
 
-int Dlist::insertlast(void* obj)
+int Dlist::insertlast(void* obj)    /** insert a new object as last element of the list */
 {
-	// ...
-	//end_of_chain->
+	end_of_chain.insert_before(obj);
 }
 
 void* Dlist::operator [](int index)

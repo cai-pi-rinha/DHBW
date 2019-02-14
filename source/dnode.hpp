@@ -15,11 +15,11 @@ public:
     Dnode(void* payload, Dnode* prev, Dnode* next);
     ~Dnode(void);
 
-	Dnode* get_next(void)	{return next};
-	Dnode* get_prev(void)	{return prev};
-	void* get_payload(void)	{return payload};
+	Dnode* get_next(void)	{return next;}
+	Dnode* get_prev(void)	{return prev;}
+	void* get_payload(void)	{return payload;}
 
-	void remove(void);
+	int remove(void);
 	int insert_before(void* obj);
 	int insert_after(void* obj);
 };
