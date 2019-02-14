@@ -17,19 +17,18 @@ Dnode::Dnode(void* payload, Dnode* prev, Dnode* next) /** create a new list elem
 
 Dnode::~Dnode(void) /** delete the current element INCLUDING its payload */
 {
-    /* invoke the destructor of payload; might cause troubles, if the payload-element has no destructor */
-    delete this.payload;
+    /* remove payload */
+    this.remove();
     /* fix pointer issues with next and prev element and delete this element */
-    Dnode* this_object  = this;
     next->prev          = prev;
     prev->next          = next;
-    delete this_object;
 }
 
 int Dnode::remove(void)   /** remove the payload of this element */
 {
-    /* erstes oder letztes Element in der Liste?? */
-
+    /* invoke the destructor of payload; might cause troubles, if the payload-element has no destructor */
+    delete this.payload;
+    this.payload = NULL;
 
     return 0;
 }
