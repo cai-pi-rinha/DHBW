@@ -20,13 +20,16 @@ Dnode::~Dnode(void)
     remove();
 }
 
-void Dnode::remove(void)
+int Dnode::remove(void)
 {
+    /* erstes oder letztes Element in der Liste?? */
     /* fix pointer issues with next and prev element and delete this element */
     Dnode* this_object  = this;
     next->prev          = prev;
     prev->next          = next;
     delete this_object;
+
+    return 0;
 }
 
 int Dnode::insert_before(void* obj)
