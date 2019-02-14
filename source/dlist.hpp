@@ -8,6 +8,9 @@ class Dlist : public Container
 private:
 	Dnode start_of_chain; /* start and end of chain as constant ?? */
 	Dnode end_of_chain;
+	int number_of_elements;
+
+	Dnode* get_Dnode_element(int index);
 	/* get_first() */
 	/* FUNKTIONSNAMEN AN UML ANPASSEN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
 
@@ -28,7 +31,6 @@ public:
 	int insertAt(int index, void* obj);
 	void* removeAt(int index);
 	int deleteAt(int index);
-
 
 	void* operator [](int index);
 };
