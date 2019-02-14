@@ -20,8 +20,8 @@ Dnode::~Dnode(void) /** delete the current element INCLUDING its payload */
     /* remove payload */
     this.remove();
     /* fix pointer issues with next and prev element and delete this element */
-    next->prev          = prev;
-    prev->next          = next;
+    next->prev = prev;
+    prev->next = next;
 }
 
 Dnode* Dnode::get_next(void)
