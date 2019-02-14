@@ -2,9 +2,9 @@
 #include "container.hpp"
 
 // constructor
-Iterator::Iterator(void)
+Iterator::Iterator()
 {
-
+	//voide
 }
 
 Iterator::Iterator(Container* container)
@@ -15,7 +15,7 @@ Iterator::Iterator(Container* container)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-Iterator_Impl::Iterator_Impl(void)
+Iterator_Impl::Iterator_Impl()
 {
 	
 }
