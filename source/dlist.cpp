@@ -34,6 +34,23 @@ int Dlist::insertlast(void* obj)    /** insert a new object as last element of t
 	end_of_chain.insert_before(obj);
 }
 
+int Dlist::insertAt(int index, void* obj)
+{
+    /* 1) go to element number (index - 1)
+     * 2) use element.insert_after
+     */
+}
+
+void* Dlist::removeAt(int index)
+{
+
+}
+
+int Dlist::deleteAt(int index)
+{
+
+}
+
 void* Dlist::operator [](int index)
 {
 	// iterate through the list until entry number "index"
