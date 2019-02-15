@@ -14,51 +14,46 @@ Dlist::Dlist(void)
 }
 
 // Date member function
-virtual int Dlist::remove(int)
+virtual int Dlist::Remove(int)
 {}
-
-virtual int Dlist::insert(void* obj)
-{
-	insertlast(obj);
-}
 
 virtual int Dlist::create(void)
 {}
 
-int Dlist::insertfirst(void* obj)   /** insert a new object as first element of the list */
+int Dlist::InsertFirst(void* obj)   /** insert a new object as first element of the list */
 {
     number_of_elements++;
-    start_of_chain.insert_after(obj);
+    start_of_chain.insertAfter(obj);
 }
 
-int Dlist::insertlast(void* obj)    /** insert a new object as last element of the list */
+int Dlist::InsertLast(void* obj)    /** insert a new object as last element of the list */
 {
     number_of_elements++;
-	end_of_chain.insert_before(obj);
+	end_of_chain.insertBefore(obj);
 }
 
-int Dlist::insertAt(int index, void* obj)   /** insert a new object at position number <index> */
+int Dlist::InsertAt(int index, void* obj)   /** insert a new object at position number <index> */
 {
     /* 1) go to element number (index)
-     * 2) use element.insert_before
+     * 2) use element.insertBefore
      */
     Dnode* temp = get_Dnode_element(index);
     if(temp)    /* temp is no null-pointer, hence insert the object */
-        temp.insert_before(obj);
+        temp.insertBefore(obj);
     else        /* temp is a null-pointer; quit with error -1 */
         return -1;
     return 0;
 }
 
-void* Dlist::removeAt(int index)    /** remove the link between the list element and the payload; return pointer to payload */
+void* Dlist::RemoveAt(int index)    /** remove the link between the list element and the payload; return pointer to payload */
 {
     Dnode* temp = get_Dnode_element(index);
     if(!temp)    /* temp is a null-pointer, hence quit and return a null-pointer */
         return NULL;
-    return temp.remove(); /* return a pointer to the removed payload */
+    return temp.Remove(); /* return a pointer to the removed payload */
 }
 
-int Dlist::deleteAt(int index)  /** call destructor of list element */
+int Dlist::DeleteAt(int index)  /** call destructor of list element */
 {
     Dnode* temp = get_Dnode_element(index);
     delete temp;    /* delete statement can be called with a null-pointer */

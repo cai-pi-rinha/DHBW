@@ -18,20 +18,20 @@ Dnode::Dnode(void* payload, Dnode* prev, Dnode* next) /** create a new list elem
 Dnode::~Dnode(void) /** delete the current element INCLUDING its payload */
 {
     /* remove payload */
-    this.remove();
+    this.Remove();
     /* fix pointer issues with next and prev element and delete this element */
     next->prev = prev;
     prev->next = next;
 }
 
-Dnode* Dnode::get_next(void)
+Dnode* Dnode::GetNext(void)
 {return next;}
-Dnode* Dnode::get_prev(void)
+Dnode* Dnode::GetPrev(void)
 {return prev;}
-void* Dnode::get_payload(void)
+void* Dnode::GetObject(void)
 {return payload;}
 
-void* Dnode::remove(void)   /** remove the link between this element and the actual payload */
+void* Dnode::Remove(void)   /** remove the link between this element and the actual payload */
 {
     /* remove the link between Dnode and the actual element; return the elements address to the user to invoke a delete command */
     void* temp = this.payload;
@@ -40,7 +40,7 @@ void* Dnode::remove(void)   /** remove the link between this element and the act
     return this.payload;
 }
 
-int Dnode::insert_before(void* obj)  /** insert a new element in front of the currently selected element */
+int Dnode::insertBefore(void* obj)  /** insert a new element in front of the currently selected element */
 {
     /* 1) create dnode-object and configure:
 	 *      prev-pointer    = previous of this object;
@@ -60,9 +60,9 @@ int Dnode::insert_before(void* obj)  /** insert a new element in front of the cu
     return 0;
 }
 
-int Dnode::insert_after(void* obj)  /** insert a new element after the currently selected element */
+int Dnode::insertAfter(void* obj)  /** insert a new element after the currently selected element */
 {
-    /* compare with insert_before() */
+    /* compare with insertBefore() */
 
     if(this->next == NULL) /* quit if there is no Dnode object after this one */
         return -1;

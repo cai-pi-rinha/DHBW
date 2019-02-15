@@ -16,8 +16,7 @@ private:
 
 public:
     Dlist(void);
-	virtual int remove(int);
-	virtual int insert(void* obj);
+	virtual int Remove(int);
 	virtual int create(void);
 	/*	virtual void function() '= 0';
 	 *	This is a pure virtual function. Used when there
@@ -26,11 +25,11 @@ public:
 	 *	function, otherwise they are abstract, meaning you
 	 *	cannot create objects of that class.
 	 */
-	int insertfirst(void* obj);
-	int insertlast(void* obj);
-	int insertAt(int index, void* obj);
-	void* removeAt(int index);
-	int deleteAt(int index);
+	int InsertFirst(void* obj);
+	int InsertLast(void* obj);
+	int InsertAt(int index, void* obj);
+	int DeleteAt(int index);
+	void* RemoveAt(int index);
 
 	void* operator [](int index);
 };
