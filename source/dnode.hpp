@@ -1,9 +1,11 @@
 #ifndef DNODE_H
 #define DNODE_H
 
-#include "dlist.hpp"
+#ifndef NULL
+    #define NULL 0
+#endif // NULL
 
-class Dnode : public Dlist
+class Dnode
 {
 private:
     Dnode* next;

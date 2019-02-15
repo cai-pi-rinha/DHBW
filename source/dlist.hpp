@@ -1,9 +1,15 @@
 #ifndef DLIST_H
 #define DLIST_H
 
+#ifndef NULL
+    #define NULL 0
+#endif // NULL
+
 #include "dnode.hpp"
 
-class Dlist : public Container
+using namespace std;
+
+class Dlist /* : public ContainerInterface */
 {
 private:
 	Dnode start_of_chain; /* start and end of chain as constant ?? */
@@ -12,7 +18,6 @@ private:
 
 	Dnode* get_Dnode_element(int index);
 	/* get_first() */
-	/* FUNKTIONSNAMEN AN UML ANPASSEN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
 
 public:
     Dlist(void);

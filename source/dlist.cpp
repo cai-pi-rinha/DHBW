@@ -4,13 +4,10 @@
 // constructor
 Dlist::Dlist(void)
 {
-	start_of_chain.prev     = NULL;
-	start_of_chain.next     = NULL; /* will point on first element of list */
-	start_of_chain.payload  = NULL;
-	end_of_chain.prev       = NULL; /* will point on last element of list */
-	end_of_chain.next       = NULL;
-	end_of_chain.payload    = NULL;
-	number_of_elements = 0;
+    Dnode temp(NULL, NULL, NULL);
+    start_of_chain      = temp;
+    end_of_chain        = temp;
+	number_of_elements  = 0;
 }
 
 // Date member function
