@@ -8,8 +8,8 @@
 class Dnode
 {
 private:
-    Dnode* next;
-    Dnode* prev;
+    Dnode* next;  /* the pointers are returned in the functions getNext/...; if they wouldn't be 'const' */
+    Dnode* prev;  /* the user of the main()-function would be able to change the private attributes of this class */
     void* payload;
 
 public:

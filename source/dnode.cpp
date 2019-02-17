@@ -18,7 +18,7 @@ Dnode::Dnode(void* payload, Dnode* prev, Dnode* next) /** create a new list elem
 Dnode::~Dnode(void) /** delete the current element INCLUDING its payload */
 {
     /* remove payload */
-    this.Remove();
+    this->Remove();
     /* fix pointer issues with next and prev element and delete this element */
     next->prev = prev;
     prev->next = next;
@@ -34,10 +34,10 @@ void* Dnode::GetObject(void)
 void* Dnode::Remove(void)   /** remove the link between this element and the actual payload */
 {
     /* remove the link between Dnode and the actual element; return the elements address to the user to invoke a delete command */
-    void* temp = this.payload;
-    this.payload = NULL;
+    void* temp = this->payload;
+    this->payload = NULL;
 
-    return this.payload;
+    return this->payload;
 }
 
 int Dnode::insertBefore(void* obj)  /** insert a new element in front of the currently selected element */
