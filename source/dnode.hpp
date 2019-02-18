@@ -1,9 +1,7 @@
 #ifndef DNODE_H
 #define DNODE_H
 
-#ifndef NULL
-    #define NULL 0
-#endif // NULL
+#include <iostream>
 
 class Dnode
 {

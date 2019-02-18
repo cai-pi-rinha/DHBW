@@ -12,21 +12,21 @@ Dlist::Dlist(void)
 
 // Date member function
 int Dlist::Remove(int)
-{}
+{ return 0; }
 
 int Dlist::create(void)
-{}
+{ return 0; }
 
 int Dlist::InsertFirst(void* obj)   /** insert a new object as first element of the list */
 {
     number_of_elements++;
-    start_of_chain.insertAfter(obj);
+    return start_of_chain.insertAfter(obj);
 }
 
 int Dlist::InsertLast(void* obj)    /** insert a new object as last element of the list */
 {
     number_of_elements++;
-	end_of_chain.insertBefore(obj);
+	return end_of_chain.insertBefore(obj);
 }
 
 int Dlist::InsertAt(int index, void* obj)   /** insert a new object at position number <index> */
@@ -62,16 +62,16 @@ int Dlist::DeleteAt(int index)  /** call destructor of list element */
 void* Dlist::operator [](int index)
 {
     Dnode* temp = get_Dnode_element(index);
-    return temp ? temp->payload : NULL;  /* return NULL if there is no element at position "index" */
+    return temp ? temp->GetObject() : NULL;  /* return NULL if there is no element at position "index" */
 }
 
 Dnode* Dlist::get_Dnode_element(int index)
 {
     /* iterate through the list until entry number "index" */
-	Dnode* current_element = start_of_chain.next;
+	Dnode* current_element = start_of_chain.GetNext();
     while(index && current_element)
     {
-        current_element = current_element->next;
+        current_element = current_element->GetNext();
         index--;
     }
     return current_element;

@@ -1,10 +1,7 @@
 #ifndef DLIST_H
 #define DLIST_H
 
-#ifndef NULL
-    #define NULL 0
-#endif // NULL
-
+#include <iostream>
 #include "dnode.hpp"
 
 using namespace std;
