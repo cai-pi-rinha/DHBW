@@ -15,21 +15,22 @@ int main()
     Dnode miniContainerZ(NULL, NULL, NULL);
     Dnode miniContainerY;
 
-    Dnode miniContainer1, miniContainer2;
-    Dnode miniContainer3((void*)&zahl1, &miniContainer1, &miniContainer2);
+    Dnode miniContainer2((void*)&zahl2, NULL, NULL);
 
-    miniContainer1.insertAfter(&miniContainer3);
-    miniContainer2.insertBefore(&miniContainer3);
+    cout << miniContainer2.insertBefore(&zahl1);
+    miniContainer2.insertAfter(&zahl2);
 
 
-    cout << "addresses of container 1 - 2 - 3 : " << endl;
-    cout << (int)&miniContainer1 << endl;
+    cout << "addresses of containers 1 - 2 - 3 : " << endl;
+    cout << (int)miniContainer2.GetPrev() << endl;
     cout << (int)&miniContainer2 << endl;
-    cout << (int)&miniContainer3 << endl << endl;
+    cout << (int)miniContainer2.GetNext() << endl << endl;
 
-    cout << "next of miniContainer1 should be miniContainer3: " << (int)miniContainer1.GetNext() << endl;
-    cout << "prev of miniContainer2 should be miniContainer3: " << (int)miniContainer1.GetPrev() << endl;
-    cout << "payload of miniContainer3 should be zahl1:       " << *(int*)miniContainer3.GetObject() << endl;
-
+    /*cout << "next of miniContainer1 should be miniContainer2: " << (int)miniContainer2.GetPrev()->GetNext() << endl;
+    cout << "prev of miniContainer3 should be miniContainer2: " << (int)miniContainer2.GetNext()->GetPrev() << endl;
+    cout << "payload of miniContainer1 should be zahl1:       " << *(int*)miniContainer2.GetPrev()->GetObject() << endl;
+    cout << "payload of miniContainer2 should be zahl2:       " << *(int*)miniContainer2.GetObject() << endl;
+    cout << "payload of miniContainer3 should be zahl3:       " << *(int*)miniContainer2.GetNext()->GetObject() << endl;
+*/
     return 0;
 }
