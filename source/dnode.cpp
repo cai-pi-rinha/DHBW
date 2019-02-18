@@ -4,8 +4,8 @@
 Dnode::Dnode(void)  /** create a new and empty list element */
 {
     payload = NULL;
-    //prev    = (Dnode*)NULL;
-    //next    = NULL;
+    prev    = NULL;
+    next    = NULL;
 }
 
 Dnode::Dnode(void* payload, Dnode* prev, Dnode* next) /** create a new list element with (payload, pointer to prev & next element) */
