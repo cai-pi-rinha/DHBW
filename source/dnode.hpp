@@ -13,7 +13,7 @@ private:
 public:
     Dnode(void);
     Dnode(void* payload, Dnode* prev, Dnode* next);
-    ~Dnode(void);
+    virtual ~Dnode(void);
 
 	Dnode* GetNext(void);
 	Dnode* GetPrev(void);

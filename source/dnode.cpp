@@ -1,11 +1,11 @@
 #include "dnode.hpp"
 
 // constructor
-Dnode::Dnode(void)
+Dnode::Dnode(void)  /** create a new and empty list element */
 {
     payload = NULL;
-    prev    = NULL;
-    next    = NULL;
+    //prev    = (Dnode*)NULL;
+    //next    = NULL;
 }
 
 Dnode::Dnode(void* payload, Dnode* prev, Dnode* next) /** create a new list element with (payload, pointer to prev & next element) */
@@ -19,9 +19,11 @@ Dnode::~Dnode(void) /** delete the current element INCLUDING its payload */
 {
     /* remove payload */
     this->Remove();
-    /* fix pointer issues with next and prev element and delete this element */
-    next->prev = prev;
-    prev->next = next;
+    /* fix pointer issues with next and prev element (if there are any) and delete this element */
+    if(next)
+        next->prev = prev;
+    if(prev)
+        prev->next = next;
 }
 
 Dnode* Dnode::GetNext(void)
