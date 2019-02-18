@@ -10,13 +10,6 @@ Dlist::Dlist(void)
 	number_of_elements  = 0;
 }
 
-// Date member function
-int Dlist::Remove(int)
-{ return 0; }
-
-int Dlist::create(void)
-{ return 0; }
-
 int Dlist::InsertFirst(void* obj)   /** insert a new object as first element of the list */
 {
     number_of_elements++;

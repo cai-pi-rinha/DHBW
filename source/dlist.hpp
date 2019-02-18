@@ -18,8 +18,6 @@ private:
 
 public:
     Dlist(void);
-	virtual int Remove(int);
-	virtual int create(void);
 	/*	virtual void function() '= 0';
 	 *	This is a pure virtual function. Used when there
 	 *	is no sensible default implementation for that method.
