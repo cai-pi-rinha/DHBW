@@ -56,6 +56,7 @@ int Dnode::insertBefore(void* obj)  /** insert a new element in front of the cur
     else
     {
         Dnode* obj_to_insert    = new Dnode(obj, this->prev, this);
+        this->prev->next        = obj_to_insert;
         this->prev              = obj_to_insert;
     }
 
@@ -71,6 +72,7 @@ int Dnode::insertAfter(void* obj)  /** insert a new element after the currently 
     else
     {
         Dnode* obj_to_insert    = new Dnode(obj, this, this->next);
+        this->next->prev        = obj_to_insert;
         this->next              = obj_to_insert;
     }
 
