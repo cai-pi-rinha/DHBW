@@ -4,9 +4,10 @@
 // constructor
 Dlist::Dlist(void)
 {
-    Dnode temp(NULL, NULL, NULL);
-    start_of_chain      = temp;
-    end_of_chain        = temp;
+    Dnode temp_start(NULL, NULL, &end_of_chain);
+    Dnode temp_end(NULL, &start_of_chain, NULL);
+    start_of_chain = temp_start;
+    end_of_chain = temp_end;
 	number_of_elements  = 0;
 }
 
