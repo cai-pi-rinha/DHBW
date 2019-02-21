@@ -17,7 +17,6 @@ private:
 	DestroyFunc destroyFunc_ptr;
 
 	Dnode* get_Dnode_element(int index);
-	/* get_first() */
 
 public:
     Dlist(DestroyFunc pfn=NULL);
@@ -31,11 +30,13 @@ public:
 	int InsertFirst(void* obj);
 	int InsertLast(void* obj);
 	int InsertAt(int index, void* obj);
-	int DeleteAt(int index);
-	void* RemoveAt(int index);
+	int DeleteAt(int index);    // entfernt listenelement UND payload
+	void* RemoveAt(int index);  // entfernt listenelement; payload bleibt irgendwo erhalten
 	int getNumberOfElements(void);
 	Dnode* GetFirst(void);
 	Dnode* GetLast(void);
+	DestroyFunc getDestroyFuncPtr(void);
+	void RefreshNumberOfElements(void);
 
 	void* operator [](int index);
 };

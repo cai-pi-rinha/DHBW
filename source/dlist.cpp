@@ -1,13 +1,12 @@
 #include "dlist.hpp"
-#include "dnode.hpp"
 
 // constructor
 Dlist::Dlist(DestroyFunc pfn)
 {
     destroyFunc_ptr = pfn;  /* pointer to function which is capable of deleting the list's payload properly */
 
-    start_of_chain = Dnode(NULL, NULL, &end_of_chain);
-    end_of_chain = Dnode(NULL, &start_of_chain, NULL);
+    start_of_chain = Dnode(NULL, NULL, &end_of_chain, this);
+    end_of_chain = Dnode(NULL, &start_of_chain, NULL, this);
 
     number_of_elements  = 0;
 }
@@ -40,26 +39,26 @@ int Dlist::InsertAt(int index, void* obj)   /** insert a new object at position 
     return 0;
 }
 
-void* Dlist::RemoveAt(int index)    /** remove the link between the list element and the payload; delete the list element; return pointer to payload */
+void* Dlist::RemoveAt(int index)    /** delete list element; payload stays alive ~somewhere~ */
 {
     Dnode* temp = get_Dnode_element(index);
     void* payload = NULL;
     if(temp)    /* skip if temp is a null pointer */
     {
-        payload = temp->Remove();   /* save the address of the removed payload */
+        payload = temp->GetObject();   /* save the address of the removed payload */
         delete temp;                /* delete the list element */
         number_of_elements--;
     }
     return payload; /* return a pointer to the removed payload */
 }
 
-int Dlist::DeleteAt(int index)  /** call destructor of payload and delete list element  */
+int Dlist::DeleteAt(int index)  /** delete list element AND payload  */
 {
     Dnode* temp = get_Dnode_element(index);
     void* payload = NULL;
     if(temp)
     {
-        payload = temp->Remove();           /* save the address of the removed payload */
+        payload = temp->GetObject();           /* save the address of the removed payload */
         if(destroyFunc_ptr)
             (*destroyFunc_ptr)(payload);    /* delete payload */
         delete temp;
@@ -94,3 +93,18 @@ Dnode* Dlist::GetFirst(void)
 
 Dnode* Dlist::GetLast(void)
 { return end_of_chain.GetPrev(); }
+
+DestroyFunc Dlist::getDestroyFuncPtr(void)
+{ return destroyFunc_ptr; }
+
+void Dlist::RefreshNumberOfElements(void)
+{
+    int counter = -1;
+    Dnode* current = start_of_chain.GetNext();
+    while(current)
+    {
+        current = current->GetNext();
+        counter++;
+    }
+    number_of_elements = counter;
+}
