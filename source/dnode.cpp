@@ -39,7 +39,7 @@ void* Dnode::Remove(void)   /** remove the link between this element and the act
     void* temp = this->payload;
     this->payload = NULL;
 
-    return this->payload;
+    return temp;
 }
 
 int Dnode::insertBefore(void* obj)  /** insert a new element in front of the currently selected element */

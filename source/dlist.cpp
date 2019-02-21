@@ -64,9 +64,9 @@ int Dlist::DeleteAt(int index)  /** call destructor of list element */
 {
     Dnode* temp = get_Dnode_element(index);
     delete temp;    /* delete statement can be called with a null-pointer */
-    if(!temp)
+    if(temp)
         number_of_elements--;
-    return 0;
+    return temp ? 0 : -1;
 }
 
 void* Dlist::operator [](int index)

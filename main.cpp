@@ -23,12 +23,15 @@ int main()
     liste.InsertLast(&zahl3);
     liste.InsertFirst(&zahl4);
     liste.InsertAt(1, &zahl5);
+    cout << "removed following object: " << *(int*)liste.RemoveAt(2) << endl;
     liste.DeleteAt(2);
+    liste.InsertAt(2, &zahl3);
 
-    cout << "listen-Werte: " << endl;
+    cout << "alle " << liste.getNumberOfElements() << " listen-Werte: " << endl;
     for(int i=0; i < liste.getNumberOfElements(); i++)
     {
-        cout << i << ": " << *(int*)liste[i] << endl;
+        if(liste[i])
+            cout << i << ": " << *(int*)liste[i] << endl;
     }
 
     /* - constructor of Dlist: */
