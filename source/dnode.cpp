@@ -1,38 +1,48 @@
 #include "dnode.hpp"
 
 // constructor
-Dnode::Dnode(void)
+Dnode::Dnode(void)  /** create a new and empty list element */
 {
     payload = NULL;
     prev    = NULL;
     next    = NULL;
 }
 
-Dnode::Dnode(void* payload, Dnode* prev, Dnode* next)
+Dnode::Dnode(void* payload, Dnode* prev, Dnode* next) /** create a new list element with (payload, pointer to prev & next element) */
 {
     this->payload   = payload;
     this->prev      = prev;
     this->next      = next;
 }
 
-Dnode::~Dnode(void)
+Dnode::~Dnode(void) /** delete the current element INCLUDING its payload */
 {
-    remove();
+    /* remove payload */
+    this->Remove();
+    /* fix pointer issues with next and prev element (if there are any) and delete this element */
+    if(next)
+        next->prev = prev;
+    if(prev)
+        prev->next = next;
 }
 
-int Dnode::remove(void)
-{
-    /* erstes oder letztes Element in der Liste?? */
-    /* fix pointer issues with next and prev element and delete this element */
-    Dnode* this_object  = this;
-    next->prev          = prev;
-    prev->next          = next;
-    delete this_object;
+Dnode* Dnode::GetNext(void)
+{return next;}
+Dnode* Dnode::GetPrev(void)
+{return prev;}
+void* Dnode::GetObject(void)
+{return payload;}
 
-    return 0;
+void* Dnode::Remove(void)   /** remove the link between this element and the actual payload */
+{
+    /* remove the link between Dnode and the actual element; return the elements address to the user to invoke a delete command */
+    void* temp = this->payload;
+    this->payload = NULL;
+
+    return temp;
 }
 
-int Dnode::insert_before(void* obj)
+int Dnode::insertBefore(void* obj)  /** insert a new element in front of the currently selected element */
 {
     /* 1) create dnode-object and configure:
 	 *      prev-pointer    = previous of this object;
@@ -41,26 +51,28 @@ int Dnode::insert_before(void* obj)
 	 * 2) change arguments of this object:
 	 *      prev-pointer    = created object
 	 */
-    if(this->prev == NULL)  /* quit if this is the first object in the row -> !start_of_list pointer needs to be updated! */
+    if(this->prev == NULL)  /* quit if there is no Dnode object in front of this one */
         return -1;
     else
     {
         Dnode* obj_to_insert    = new Dnode(obj, this->prev, this);
+        this->prev->next        = obj_to_insert;
         this->prev              = obj_to_insert;
     }
 
     return 0;
 }
 
-int Dnode::insert_after(void* obj)
+int Dnode::insertAfter(void* obj)  /** insert a new element after the currently selected element */
 {
-    /* compare insert_before() */
+    /* compare with insertBefore() */
 
-    if(this->next == NULL)
+    if(this->next == NULL) /* quit if there is no Dnode object after this one */
         return -1;
     else
     {
         Dnode* obj_to_insert    = new Dnode(obj, this, this->next);
+        this->next->prev        = obj_to_insert;
         this->next              = obj_to_insert;
     }
 

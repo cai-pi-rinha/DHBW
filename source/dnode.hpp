@@ -1,27 +1,27 @@
 #ifndef DNODE_H
 #define DNODE_H
 
-#include "dlist.hpp"
+#include <iostream>
 
-class Dnode : public Dlist
+class Dnode
 {
 private:
-    Dnode* next;
-    Dnode* prev;
+    Dnode* next;  /* the pointers are returned in the functions getNext/...; if they wouldn't be 'const' */
+    Dnode* prev;  /* the user of the main()-function would be able to change the private attributes of this class */
     void* payload;
 
 public:
     Dnode(void);
     Dnode(void* payload, Dnode* prev, Dnode* next);
-    ~Dnode(void);
+    virtual ~Dnode(void);
 
-	Dnode* get_next(void)	{return next};
-	Dnode* get_prev(void)	{return prev};
-	void* get_payload(void)	{return payload};
+	Dnode* GetNext(void);
+	Dnode* GetPrev(void);
+	void* GetObject(void);
 
-	void remove(void);
-	int insert_before(void* obj);
-	int insert_after(void* obj);
+	void* Remove(void);
+	int insertBefore(void* obj);
+	int insertAfter(void* obj);
 };
 
 #endif
