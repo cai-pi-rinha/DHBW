@@ -31,6 +31,8 @@ public:
 	int DeleteAt(int index);
 	void* RemoveAt(int index);
 	int getNumberOfElements(void);
+	Dnode* GetFirst(void);
+	Dnode* GetLast(void);
 
 	void* operator [](int index);
 };

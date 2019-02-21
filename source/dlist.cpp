@@ -88,6 +88,10 @@ Dnode* Dlist::get_Dnode_element(int index)
 }
 
 int Dlist::getNumberOfElements(void)
-{
-    return number_of_elements;
-}
+{ return number_of_elements; }
+
+Dnode* Dlist::GetFirst(void)
+{ return start_of_chain.GetNext(); }
+
+Dnode* Dlist::GetLast(void)
+{ return end_of_chain.GetPrev(); }
