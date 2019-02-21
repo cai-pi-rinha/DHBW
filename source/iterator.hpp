@@ -1,51 +1,47 @@
 #ifndef ITERATOR_H
 #define ITERATOR_H
 
-class Iterator
+#include "container_interface.hpp"
+#include <stdio.h>
+
+class Iterator 
 {
 private:
-	Container* imp;
-	Dnode* current;
-	Dnode* next;
-	Dnode* prev;
-	Dnode* first;
-	Dnode* last;
-
+	IteratorImp* m_imp = NULL;		//bringt tats�chlich nichts, wird im konstrutkor initialisiert
+	
 public:
-    Iterator(void);
-	Iterator(Container container);
-	// - Q: Ist es denn möglich, die Werte für current, next, ... in den vererbten Klassen zu befüllen und in der Parent-Klasse auszugeben?
-	//	-> A: Prinzipiell sollte das funktionieren; was aber, wenn ich nach Ausgabe von next das Attribut aktualisieren will (also "next = next++")
-	virtual Dnode* first(void)		{return first;}
-	virtual Dnode* last(void) 		{return last;}
-	virtual Dnode* next(void) 		{return next;}
-	virtual Dnode* prev(void) 		{return prev;}
-	virtual Dnode* current(void)	= 0;
-	/*	'= 0';
-	 *	This is a pure virtual function. Used when there
-	 *	is no sensible default implementation for that method.
-	 *	This means, that subclasses have to implement this
-	 *	function, otherwise they are abstract, meaning you
-	 *	cannot create objects of that class.
-	 */
+	Iterator();
+	Iterator(const Container_Interface& container);
+	Iterator(const Iterator& iterator);
+	~Iterator();
+	Iterator& operator=(const Iterator& iterObj);
+	void* First();
+	void* Last();
+	void* Prev();
+	void* Next();
+	void* Current();
 };
 
-class Iterator_Impl : public Iterator : public Container
+class IteratorImp 
 {
 private:
+	const Container_Interface* m_owner = NULL;
 
+protected:
+	IteratorImp(const Container_Interface& owner);
+	IteratorImp(const IteratorImp& implementation);
+	
 public:
-    Iterator_Impl(void);
-	Iterator_Impl(Container container);
-	// - Q: Ist es denn möglich, die Werte für current, next, ... in den vererbten Klassen zu befüllen und in der Parent-Klasse auszugeben?
-	//	-> A: Prinzipiell sollte das funktionieren; was aber, wenn ich nach Ausgabe von next das Attribut aktualisieren will (also "next = next++")
-	virtual Dnode* first(void)		= 0;
-	virtual Dnode* last(void)		= 0;
-	virtual Dnode* next(void)		= 0;
-	virtual Dnode* prev(void)		= 0;
-	virtual Dnode* current(void)	= 0;
-	/*	'= 0';
-	 *	This is a pure virtual function. Used when there
+	IteratorImp* Clone();
+	virtual ~IteratorImp() = 0;
+	virtual void* First() = 0;
+	virtual void* Last() = 0;
+	virtual void* Prev() = 0;
+	virtual void* Next() = 0;
+	virtual void* Current() = 0;
+    
+	//virtual Dnode* current(void)	= 0;
+	/*	This is a pure virtual function. Used when there
 	 *	is no sensible default implementation for that method.
 	 *	This means, that subclasses have to implement this
 	 *	function, otherwise they are abstract, meaning you
