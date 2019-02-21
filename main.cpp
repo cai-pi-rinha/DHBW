@@ -11,17 +11,25 @@ int main()
     int zahl1 = 11;
     int zahl2 = 22;
     int zahl3 = 33;
+    int zahl4 = 44;
+    int zahl5 = 55;
+    int zahl6 = 66;
+    int zahl7 = 77;
+
 
     Dlist liste;
-    cout << "elements: " << liste.getNumberOfElements() << endl;
     liste.InsertLast(&zahl1);
-    cout << "elements: " << liste.getNumberOfElements() << endl;
     liste.InsertLast(&zahl2);
-    cout << "elements: " << liste.getNumberOfElements() << endl;
     liste.InsertLast(&zahl3);
-    cout << "elements: " << liste.getNumberOfElements() << endl;
-    cout << "liste: " << (int)liste[1];// << " - " << *(int*)liste[1] << " - " << *(int*)liste[2] << endl;
+    liste.InsertFirst(&zahl4);
+    liste.InsertAt(1, &zahl5);
+    liste.DeleteAt(2);
 
+    cout << "listen-Werte: " << endl;
+    for(int i=0; i < liste.getNumberOfElements(); i++)
+    {
+        cout << i << ": " << *(int*)liste[i] << endl;
+    }
 
     /* - constructor of Dlist: */
     // start_of_chain and end_of_chain need to be connected with each other:
