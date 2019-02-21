@@ -1,6 +1,6 @@
 #include <iostream>
-#include "source/dnode.hpp"
 #include "source/dlist.hpp"
+#include "source/dnode.hpp"
 
 
 using namespace std;
@@ -27,11 +27,19 @@ int main()
     liste.InsertLast(&zahl3);
     liste.InsertFirst(&zahl4);
     liste.InsertAt(1, &zahl5);
-    //cout << "removed following object: " << *(int*)liste.RemoveAt(2) << endl;
+    liste.InsertLast(&zahl6);
+    cout << "removed following object: " << *(int*)liste.RemoveAt(2) << endl;
     liste.DeleteAt(2);
     liste.DeleteAt(3);
     liste.DeleteAt(0);
     liste.InsertAt(2, &zahl3);
+    liste.InsertAt(2, &zahl7);
+    liste.InsertLast(&zahl7);
+    liste.InsertLast(&zahl7);
+    liste.InsertLast(&zahl7);
+    liste.InsertLast(&zahl7);
+    liste.GetFirst()->Remove(); // löscht den payload eines listenelements; das Listenelement selbst bleibt aber noch erhalten; außerdem wird "number_of_elements" nicht verändert
+    delete liste.GetFirst();
 
     print_list(liste);
 
