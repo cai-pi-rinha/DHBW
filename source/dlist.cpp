@@ -6,9 +6,14 @@ Dlist::Dlist(void)
 {
     Dnode temp_start(NULL, NULL, &end_of_chain);
     Dnode temp_end(NULL, &start_of_chain, NULL);
+    cout << "&start_of_chain: " << &start_of_chain << " &temp_start: " << &temp_start << endl;
     start_of_chain = temp_start;
     end_of_chain = temp_end;
-	number_of_elements  = 0;
+    cout << "&start_of_chain: " << end_of_chain.GetPrev() << " &temp_start: " << &temp_start << endl;
+    delete &temp_start;
+    delete &temp_end;
+    cout << "&start_of_chain: " << end_of_chain.GetPrev() << " &temp_start: " << &temp_start << endl;
+    number_of_elements  = 0;
 }
 
 int Dlist::InsertFirst(void* obj)   /** insert a new object as first element of the list */
@@ -56,6 +61,7 @@ int Dlist::DeleteAt(int index)  /** call destructor of list element */
 void* Dlist::operator [](int index)
 {
     Dnode* temp = get_Dnode_element(index);
+    cout << "dnode address at []: " << (int)temp << endl;
     return temp ? temp->GetObject() : NULL;  /* return NULL if there is no element at position "index" */
 }
 
@@ -63,10 +69,17 @@ Dnode* Dlist::get_Dnode_element(int index)
 {
     /* iterate through the list until entry number "index" */
 	Dnode* current_element = start_of_chain.GetNext();
+	cout << "index: " << index << " Dnode address: " << start_of_chain.GetNext() << endl;
     while(index && current_element)
     {
+        cout << "index: " << index << " Dnode address: " << current_element << endl;
         current_element = current_element->GetNext();
         index--;
     }
     return current_element;
+}
+
+int Dlist::getNumberOfElements(void)
+{
+    return number_of_elements;
 }

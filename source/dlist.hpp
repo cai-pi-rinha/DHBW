@@ -30,6 +30,7 @@ public:
 	int InsertAt(int index, void* obj);
 	int DeleteAt(int index);
 	void* RemoveAt(int index);
+	int getNumberOfElements(void);
 
 	void* operator [](int index);
 };
