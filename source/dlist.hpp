@@ -6,18 +6,21 @@
 
 using namespace std;
 
+typedef void (*DestroyFunc)(void*); /* used in DeleteAt() */
+
 class Dlist /* : public ContainerInterface */
 {
 private:
 	Dnode start_of_chain; /* start and end of chain as constant ?? */
 	Dnode end_of_chain;
 	int number_of_elements;
+	DestroyFunc destroyFunc_ptr;
 
 	Dnode* get_Dnode_element(int index);
 	/* get_first() */
 
 public:
-    Dlist(void);
+    Dlist(DestroyFunc pfn=NULL);
 	/*	virtual void function() '= 0';
 	 *	This is a pure virtual function. Used when there
 	 *	is no sensible default implementation for that method.
