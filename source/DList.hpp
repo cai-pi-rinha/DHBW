@@ -19,6 +19,9 @@ private:
 
 	DNode* get_DNode_element(int index);
 
+protected:
+    IteratorImp* CreateIteratorImp();
+
 public:
     DList(DestroyFunc pfn=NULL);
 

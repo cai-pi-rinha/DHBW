@@ -13,9 +13,10 @@ class ContainerInterface
 private:
     IteratorImp* myIteratorImp;
 protected:
-    IteratorImp* CreateIteratorImp();
+    virtual IteratorImp* CreateIteratorImp()    = 0;
 public:
     ContainerInterface(void);
+    ~ContainerInterface(void);
     Iterator* MakeIterator(void);
     virtual int Insert(void* payload)   = 0;
     virtual void Empty(void)            = 0;

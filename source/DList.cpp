@@ -1,4 +1,5 @@
 #include "DList.hpp"
+//#include "DListIteratorImp.hpp"   // to be added when DList and Iterator are combined
 
 // constructor
 DList::DList(DestroyFunc pfn)
@@ -9,6 +10,15 @@ DList::DList(DestroyFunc pfn)
     end_of_chain = DNode(NULL, &start_of_chain, NULL, this);
 
     number_of_elements  = 0;
+}
+
+IteratorImp* DList::CreateIteratorImp()
+{
+    /*
+    IteratorImp* = new DListIteratorImp();  // create a new DListIteratorImp and return the pointer as IteratorImp
+    return IteratorImp;
+    */
+    return NULL;
 }
 
 int DList::Insert(void* obj)    /** Insert new element at end of list */
