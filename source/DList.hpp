@@ -9,7 +9,7 @@ using namespace std;
 
 typedef void (*DestroyFunc)(void*); /* used in DeleteAt() */
 
-class DList// : public ContainerInterface
+class DList : public ContainerInterface
 {
 private:
 	DNode start_of_chain; /* start and end of chain as constant ?? */
@@ -22,12 +22,16 @@ private:
 public:
     DList(DestroyFunc pfn=NULL);
 
+    int Insert(void* obj);
+    void Empty(void);
+    int Count(void);
+    void* GetAt(int index);
+
 	int InsertFirst(void* obj);
 	int InsertLast(void* obj);
 	int InsertAt(int index, void* obj);
 	int DeleteAt(int index);    // entfernt listenelement UND payload
 	void* RemoveAt(int index);  // entfernt listenelement; payload bleibt irgendwo erhalten
-	int getNumberOfElements(void);
 	DNode* GetFirst(void);
 	DNode* GetLast(void);
 	DestroyFunc getDestroyFuncPtr(void);

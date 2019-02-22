@@ -15,28 +15,3 @@ Iterator* ContainerInterface::MakeIterator(void)
 {
 
 }
-
-int ContainerInterface::Insert(void* payload)
-{
-
-}
-
-void ContainerInterface::Empty(void)
-{
-
-}
-
-int ContainerInterface::Count(void)
-{
-
-}
-
-void* ContainerInterface::GetAt(int index)
-{
-
-}
-
-void* ContainerInterface::operator[](int index)
-{
-
-}

@@ -11,6 +11,26 @@ DList::DList(DestroyFunc pfn)
     number_of_elements  = 0;
 }
 
+int DList::Insert(void* obj)    /** Insert new element at end of list */
+{
+    InsertLast(obj);
+}
+
+void DList::Empty(void) /** kills entire list */
+{
+    while(start_of_chain.GetNext())
+        DeleteAt(0);
+}
+
+void* DList::GetAt(int index)
+{
+    DNode* DNode_element = this->get_DNode_element(index);
+    return DNode_element ? DNode_element->GetObject() : NULL;
+}
+
+int DList::Count(void)
+{ return number_of_elements; }
+
 int DList::InsertFirst(void* obj)   /** insert a new object as first element of the list */
 {
     number_of_elements++;
@@ -84,9 +104,6 @@ DNode* DList::get_DNode_element(int index)
     }
     return current_element;
 }
-
-int DList::getNumberOfElements(void)
-{ return number_of_elements; }
 
 DNode* DList::GetFirst(void)
 { return start_of_chain.GetNext(); }
