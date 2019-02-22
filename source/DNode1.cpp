@@ -1,10 +1,10 @@
-#include "dnode.hpp"
-#include "dlist.hpp"
+#include "DNode.hpp"
+#include "DList.hpp"
 
-typedef void (*DestroyFuncDnode)(void*);
+typedef void (*DestroyFuncDNode)(void*);
 
 // constructor
-Dnode::Dnode(Dlist* myListPtr)  /** create a new and empty list element */
+DNode::DNode(DList* myListPtr)  /** create a new and empty list element */
 {
     payload     = NULL;
     prev        = NULL;
@@ -12,7 +12,7 @@ Dnode::Dnode(Dlist* myListPtr)  /** create a new and empty list element */
     myList      = myListPtr;
 }
 
-Dnode::Dnode(void* payload, Dnode* prev, Dnode* next, Dlist* myListPtr) /** create a new list element with (payload, pointer to prev & next element) */
+DNode::DNode(void* payload, DNode* prev, DNode* next, DList* myListPtr) /** create a new list element with (payload, pointer to prev & next element) */
 {
     this->payload   = payload;
     this->prev      = prev;
@@ -20,7 +20,7 @@ Dnode::Dnode(void* payload, Dnode* prev, Dnode* next, Dlist* myListPtr) /** crea
     myList          = myListPtr;
 }
 
-Dnode::~Dnode(void) /** delete the current element EXCLUDING its payload */
+DNode::~DNode(void) /** delete the current element EXCLUDING its payload */
 {
     /* fix pointer issues with next and prev element (if there are any) and delete this element */
     if(next)
@@ -30,38 +30,38 @@ Dnode::~Dnode(void) /** delete the current element EXCLUDING its payload */
     myList->RefreshNumberOfElements();
 }
 
-Dnode* Dnode::GetNext(void)
+DNode* DNode::GetNext(void)
 {return next;}
-Dnode* Dnode::GetPrev(void)
+DNode* DNode::GetPrev(void)
 {return prev;}
-void* Dnode::GetObject(void)
+void* DNode::GetObject(void)
 {return payload;}
 
-void Dnode::Remove(void)   /** delete the payload */
+void DNode::Remove(void)   /** delete the payload */
 {
     if(payload)
     {
-        DestroyFuncDnode destroyFunc_ptr = myList->getDestroyFuncPtr();
+        DestroyFuncDNode destroyFunc_ptr = myList->getDestroyFuncPtr();
         if(destroyFunc_ptr)
             (*destroyFunc_ptr)(payload);    /* delete payload */
     }
     payload = NULL;
 }
 
-int Dnode::insertBefore(void* obj)  /** insert a new element in front of the currently selected element */
+int DNode::insertBefore(void* obj)  /** insert a new element in front of the currently selected element */
 {
-    /* 1) create dnode-object and configure:
+    /* 1) create DNode-object and configure:
 	 *      prev-pointer    = previous of this object;
 	 *      next-pointer    = this object;
 	 *      payload         = obj
 	 * 2) change arguments of this object:
 	 *      prev-pointer    = created object
 	 */
-    if(this->prev == NULL)  /* quit if there is no Dnode object in front of this one */
+    if(this->prev == NULL)  /* quit if there is no DNode object in front of this one */
         return -1;
     else
     {
-        Dnode* obj_to_insert    = new Dnode(obj, this->prev, this, this->myList);
+        DNode* obj_to_insert    = new DNode(obj, this->prev, this, this->myList);
         this->prev->next        = obj_to_insert;
         this->prev              = obj_to_insert;
     }
@@ -69,15 +69,15 @@ int Dnode::insertBefore(void* obj)  /** insert a new element in front of the cur
     return 0;
 }
 
-int Dnode::insertAfter(void* obj)  /** insert a new element after the currently selected element */
+int DNode::insertAfter(void* obj)  /** insert a new element after the currently selected element */
 {
     /* compare with insertBefore() */
 
-    if(this->next == NULL) /* quit if there is no Dnode object after this one */
+    if(this->next == NULL) /* quit if there is no DNode object after this one */
         return -1;
     else
     {
-        Dnode* obj_to_insert    = new Dnode(obj, this, this->next, this->myList);
+        DNode* obj_to_insert    = new DNode(obj, this, this->next, this->myList);
         this->next->prev        = obj_to_insert;
         this->next              = obj_to_insert;
     }

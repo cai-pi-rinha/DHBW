@@ -1,11 +1,11 @@
 #include <iostream>
-#include "source/dlist.hpp"
-#include "source/dnode.hpp"
+#include "source/DList.hpp"
+#include "source/DNode.hpp"
 
 
 using namespace std;
 
-void print_list(Dlist &liste);
+void print_list(DList &liste);
 void DestroyIntPointer(void* pv)
 { delete (int*)pv; }
 
@@ -21,7 +21,7 @@ int main()
     int zahl7 = 77;
 
 
-    Dlist liste(&DestroyIntPointer);
+    DList liste(&DestroyIntPointer);
     liste.InsertLast(&zahl1);
     liste.InsertLast(&zahl2);
     liste.InsertLast(&zahl3);
@@ -46,7 +46,7 @@ int main()
     return 0;
 }
 
-void print_list(Dlist &liste)
+void print_list(DList &liste)
 {
     cout << "alle " << liste.getNumberOfElements() << " listen-Werte: " << endl;
     for(int i=0; i < liste.getNumberOfElements(); i++)
