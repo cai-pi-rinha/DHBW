@@ -2,21 +2,18 @@
 //#include "Iterator.hpp"   // to be added when DList and Iterator are combined
 
 
-ContainerInterface::ContainerInterface(void)
+ContainerInterface::ContainerInterface()
 {
-    myIteratorImp = NULL;
+  
 }
 
-ContainerInterface::~ContainerInterface(void)
+ContainerInterface::~ContainerInterface()
 {
 
 }
 
-Iterator* ContainerInterface::MakeIterator(void)
+Iterator* ContainerInterface::MakeIterator() const
 {
-    /*
-    Iterator* newIterator = new Iterator(this); // create a new Iterator with a reference of the current ContainerInterface
-    return &newIterator;
-    */
-    return NULL;
-}
+    Iterator* newiterator = new Iterator(*this); // create a new iterator with a reference of the current containerinterface
+    return newiterator;
+ }

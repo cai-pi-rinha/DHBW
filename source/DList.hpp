@@ -4,6 +4,7 @@
 #include <iostream>
 #include "DNode.hpp"
 #include "ContainerInterface.hpp"
+#include"dlist_iteratorImp.hpp"
 
 using namespace std;
 
@@ -12,22 +13,22 @@ typedef void (*DestroyFunc)(void*); /* used in DeleteAt() */
 class DList : public ContainerInterface
 {
 private:
-	DNode start_of_chain; /* start and end of chain as constant ?? */
-	DNode end_of_chain;
+	DNode* start_of_chain; /* start and end of chain as constant ?? */
+	DNode* end_of_chain;
 	int number_of_elements;
 	DestroyFunc destroyFunc_ptr;
 
 	DNode* get_DNode_element(int index);
-
+	//~DList(); hier sollten die elemente gelöscht werden oder?
 protected:
-    IteratorImp* CreateIteratorImp();
+    
 
 public:
     DList(DestroyFunc pfn=NULL);
-
+	IteratorImp* CreateIteratorImp() const;
     int Insert(void* obj);
-    void Empty(void);
-    int Count(void);
+    void Empty();
+    int Count() const;
     void* GetAt(int index);
 
 	int InsertFirst(void* obj);
@@ -35,10 +36,10 @@ public:
 	int InsertAt(int index, void* obj);
 	int DeleteAt(int index);    // entfernt listenelement UND payload
 	void* RemoveAt(int index);  // entfernt listenelement; payload bleibt irgendwo erhalten
-	DNode* GetFirst(void);
-	DNode* GetLast(void);
-	DestroyFunc getDestroyFuncPtr(void);
-	void RefreshNumberOfElements(void);
+	DNode* GetFirst() const;
+	DNode* GetLast() const;
+	DestroyFunc getDestroyFuncPtr() const;
+	void RefreshNumberOfElements();
 
 	void* operator [](int index);
 };

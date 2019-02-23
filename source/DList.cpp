@@ -1,35 +1,40 @@
 #include "DList.hpp"
-//#include "DListIteratorImp.hpp"   // to be added when DList and Iterator are combined
+#include "dlist_iteratorImp.hpp"   
 
 // constructor
 DList::DList(DestroyFunc pfn)
 {
     destroyFunc_ptr = pfn;  /* pointer to function which is capable of deleting the list's payload properly */
+	DNode* newStart = new DNode;
+	DNode* newEnd = new DNode;
 
-    start_of_chain = DNode(NULL, NULL, &end_of_chain, this);
+	start_of_chain = newStart;
+	end_of_chain = newEnd;
+    /*start_of_chain = DNode(NULL, NULL, &end_of_chain, this);
     end_of_chain = DNode(NULL, &start_of_chain, NULL, this);
+	was soll das machen?*/
+
 
     number_of_elements  = 0;
 }
 
-IteratorImp* DList::CreateIteratorImp()
+IteratorImp* DList::CreateIteratorImp() const
 {
-    /*
-    IteratorImp* = new DListIteratorImp();  // create a new DListIteratorImp and return the pointer as IteratorImp
-    return IteratorImp;
-    */
-    return NULL;
+    Dlist_IteratorImp* DlistIt = new Dlist_IteratorImp(*this);  // create a new DListIteratorImp and return the pointer as IteratorImp
+    return DlistIt;
 }
 
 int DList::Insert(void* obj)    /** Insert new element at end of list */
 {
-    InsertLast(obj);
+	number_of_elements++;
+    return InsertLast(obj);
 }
 
 void DList::Empty(void) /** kills entire list */
 {
-    while(start_of_chain.GetNext())
+    while(start_of_chain->GetNext())
         DeleteAt(0);
+	number_of_elements = 0;
 }
 
 void* DList::GetAt(int index)
@@ -38,19 +43,19 @@ void* DList::GetAt(int index)
     return DNode_element ? DNode_element->GetObject() : NULL;
 }
 
-int DList::Count(void)
+int DList::Count(void) const
 { return number_of_elements; }
 
 int DList::InsertFirst(void* obj)   /** insert a new object as first element of the list */
 {
     number_of_elements++;
-    return start_of_chain.insertAfter(obj);
+    return start_of_chain->insertAfter(obj);
 }
 
 int DList::InsertLast(void* obj)    /** insert a new object as last element of the list */
 {
     number_of_elements++;
-	return end_of_chain.insertBefore(obj);
+	return end_of_chain->insertBefore(obj);
 }
 
 int DList::InsertAt(int index, void* obj)   /** insert a new object at position number <index> */
@@ -106,7 +111,7 @@ void* DList::operator [](int index)
 DNode* DList::get_DNode_element(int index)
 {
     /* iterate through the list until entry number "index" */
-	DNode* current_element = start_of_chain.GetNext();
+	DNode* current_element = start_of_chain->GetNext();
     while(index && current_element)
     {
         current_element = current_element->GetNext();
@@ -115,19 +120,19 @@ DNode* DList::get_DNode_element(int index)
     return current_element;
 }
 
-DNode* DList::GetFirst(void)
-{ return start_of_chain.GetNext(); }
+DNode* DList::GetFirst(void) const
+{ return start_of_chain->GetNext(); }
 
-DNode* DList::GetLast(void)
-{ return end_of_chain.GetPrev(); }
+DNode* DList::GetLast(void) const
+{ return end_of_chain->GetPrev(); }
 
-DestroyFunc DList::getDestroyFuncPtr(void)
+DestroyFunc DList::getDestroyFuncPtr(void) const
 { return destroyFunc_ptr; }
 
-void DList::RefreshNumberOfElements(void)
+void DList::RefreshNumberOfElements(void) 
 {
     int counter = -1;
-    DNode* current = start_of_chain.GetNext();
+    DNode* current = start_of_chain->GetNext();
     while(current)
     {
         current = current->GetNext();

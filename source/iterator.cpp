@@ -1,12 +1,14 @@
 #include "iterator.hpp"
+#include "ContainerInterface.hpp"
 
 Iterator::Iterator()
 {
+	m_imp = 0;
 	//was soll hier geschehen?
-	m_imp;
+	//m_imp;
 }
 
-Iterator::Iterator(const Container_Interface& container)
+Iterator::Iterator(const ContainerInterface& container)
 {
 	m_imp = container.CreateIteratorImp();
 }
@@ -60,9 +62,12 @@ void* Iterator::Current()
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+IteratorImp::IteratorImp()
+{
 
+}
 
-IteratorImp::IteratorImp(const Container_Interface& owner)
+IteratorImp::IteratorImp(const ContainerInterface& owner)
 {
 	m_owner = &owner;
 }

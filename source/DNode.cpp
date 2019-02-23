@@ -30,9 +30,9 @@ DNode::~DNode(void) /** delete the current element EXCLUDING its payload */
     myList->RefreshNumberOfElements();
 }
 
-DNode* DNode::GetNext(void)
+DNode* DNode::GetNext(void) const
 {return next;}
-DNode* DNode::GetPrev(void)
+DNode* DNode::GetPrev(void) const
 {return prev;}
 void* DNode::GetObject(void)
 {return payload;}
@@ -73,8 +73,11 @@ int DNode::insertAfter(void* obj)  /** insert a new element after the currently 
 {
     /* compare with insertBefore() */
 
-    if(this->next == NULL) /* quit if there is no DNode object after this one */
+    if(this->next == NULL) /* quit if there is no DNode object after this one */ 
         return -1;
+
+
+		//wat? warum denn das? ich dachte genau dann soll es ja null sein, weil es grad danach keins gibt
     else
     {
         DNode* obj_to_insert    = new DNode(obj, this, this->next, this->myList);
