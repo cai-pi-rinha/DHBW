@@ -38,35 +38,36 @@ void String::setLength()
 
 int String::Length() const
 {
-	return m_ilength;
+
+	return this != NULL ? m_ilength : NULL;
 }
 
 const char* String::GetStr() const
 {
-	return m_pszStr;
+	return this != NULL ? m_pszStr : NULL;			//if this is a Nullptr dont give back member..
 }
 
 int String::FindChar(char cSearch, int iStartIndex) const
 {
 	int iRet = -1;
-	if(iStartIndex < m_ilength && iStartIndex >= 0)
+	if (iStartIndex < m_ilength && iStartIndex >= 0 && this)
 	{
 		iRet = 0;
 		char* temp = m_pszStr + iStartIndex;
 		bool found = false;
-		while(*temp != '\0' && !found)		// \0 marks the end of the string_type
+		while (*temp != '\0' && !found)		// \0 marks the end of the string_type
 		{
-			if(cSearch == *temp)	//when we found it, we mustn't increase the index iRet
+			if (cSearch == *temp)	//when we found it, we mustn't increase the index iRet
 			{
 				found = true;
 			}
-			else{
+			else {
 				iRet++;
 			}
 			temp++;
 		}
 		iRet += iStartIndex; 		//dont forget to add the startindex(offset)
-		if(!found)
+		if (!found)
 			iRet = -1;
 	}
 	return iRet;		
@@ -76,7 +77,7 @@ int String::FindChar(char cSearch, int iStartIndex) const
 int String::FindString(const char* pszSearchString, int iStartIndex) const
 {
 	int iRet = -1;
-	if(iStartIndex < m_ilength && iStartIndex >= 0)
+	if(iStartIndex < m_ilength && iStartIndex >= 0 && this)
 	{
 		iRet = 0;
 		char* temp = m_pszStr + iStartIndex;
@@ -109,18 +110,18 @@ int String::FindString(const char* pszSearchString, int iStartIndex) const
 
 String:: operator const char*() const	//Bsp: String string1; const char* pszStr = string1 
 {										//man kann also einen String einem const character pointer zuweisen! 
-	return m_pszStr;
+	return this != NULL ? m_pszStr : NULL;			//if this is a Nullptr dont give back member..
 }
 
 String:: operator char*() 
 {									 
-	return m_pszStr;
+	return this != NULL ? m_pszStr : NULL;			//if this is a Nullptr dont give back member..
 }
 
 String:: operator int() const	
 {										
 	int iRet = 0;
-	if(m_pszStr != NULL)
+	if(m_pszStr != NULL && this)
 		iRet = atoi(m_pszStr); //wandelt string "1234" in eine zahl 1234, buchstaben werden zu null
 	return iRet;
 }
@@ -128,21 +129,24 @@ String:: operator int() const
 String& String::Normalise(const char* pszParameters)
 {	
 	bool found = false;
-	for(int i = 0; i < Strlen(pszParameters); i++)
+	if (this)
 	{
-		while(m_pszStr[0] == pszParameters[i]){
-			found = true;
-			*this = PartCopy(1, m_ilength - 1);		//lose the first character, stopindex is length-1
-		}
-		while(m_pszStr[m_ilength-1] == pszParameters[i]){	//last character is length-1
-			found = true;
-			*this = PartCopy(0, m_ilength - 2);		//lose the last character
-		}
-		if(found)
+		for (int i = 0; i < Strlen(pszParameters); i++)
 		{
-			i = -1;									//if we found a parameter we have to go over the whole string again
-													//-1 because it will be counted immediately afterwards
-			found = false;
+			while (m_pszStr[0] == pszParameters[i]) {
+				found = true;
+				*this = PartCopy(1, m_ilength - 1);		//lose the first character, stopindex is length-1
+			}
+			while (m_pszStr[m_ilength - 1] == pszParameters[i]) {	//last character is length-1
+				found = true;
+				*this = PartCopy(0, m_ilength - 2);		//lose the last character
+			}
+			if (found)
+			{
+				i = -1;									//if we found a parameter we have to go over the whole string again
+														//-1 because it will be counted immediately afterwards
+				found = false;
+			}
 		}
 	}
 	return *this;
@@ -150,10 +154,12 @@ String& String::Normalise(const char* pszParameters)
 
 String& String::operator+=(const String& rccoStr)
 {
-		int iNewLen = m_ilength + rccoStr.m_ilength +1;		//dont forget \0
+	if (this)
+	{
+		int iNewLen = m_ilength + rccoStr.m_ilength + 1;		//dont forget \0
 		int iNext = 0;
 		char* pszNew = new char[iNewLen];
-		if(m_pszStr)
+		if (m_pszStr)
 		{
 			Strcpy(pszNew, m_pszStr);
 			iNext = m_ilength;
@@ -163,7 +169,8 @@ String& String::operator+=(const String& rccoStr)
 		delete[] m_pszStr;
 		m_pszStr = pszNew;
 		setLength();
-		return *this;
+	}
+	return *this;
 }
 
 
@@ -171,7 +178,7 @@ String&	String::Cut(int iStartIndex, int iStopIndex)
 {
 	String* returnString = new String("NULL");
 	//check for some stuff
-	if (m_pszStr && iStartIndex >= 0  && iStartIndex < iStopIndex && iStopIndex < m_ilength ){
+	if (m_pszStr && this && iStartIndex >= 0  && iStartIndex < iStopIndex && iStopIndex < m_ilength ){
 		char* pszCutString = new char[iStopIndex - iStartIndex +1]; 					//don't forget the /0
 		char* pszNewString = new char[m_ilength - (iStopIndex - iStartIndex) +1]; 		
 		char* pszCutBegin = pszCutString; 					//remember the beginning of the pszCutString
@@ -200,7 +207,7 @@ String&	String::PartCopy(int iStartIndex, int iStopIndex) const
 {
 	String* returnString = new String("NULL");
 	//check for some stuff
-	if (m_pszStr && iStartIndex >= 0  && iStartIndex < iStopIndex && iStopIndex < m_ilength ){
+	if (m_pszStr && this && iStartIndex >= 0  && iStartIndex < iStopIndex && iStopIndex < m_ilength ){
 		char* pszNewString = new char[iStopIndex - iStartIndex +1]; 		
 		char* pszCopyBegin = pszNewString; 					//remember the beginning of the pszCopyString
 		char* pszThis = m_pszStr+iStartIndex;				//start copying at the startpoint
@@ -218,7 +225,7 @@ String&	String::PartCopy(int iStartIndex, int iStopIndex) const
 bool String::Replace(int i, char cNew)
 {
 	bool bReplaced = false;
-	if(i <= Strlen(m_pszStr)-1 && m_pszStr && i >= 0)		// -1 bcs when we want to change the last character its at length-1 
+	if(i <= Strlen(m_pszStr)-1 && m_pszStr && i >= 0 && this)		// -1 bcs when we want to change the last character its at length-1 
 	{									//(index starts counting at 0, length not)
 		m_pszStr[i] = cNew;
 		bReplaced = true;
@@ -228,7 +235,7 @@ bool String::Replace(int i, char cNew)
 
 String& String::operator=(const char* pszBuf)
 {
-	if (m_pszStr != NULL && pszBuf != NULL)
+	if (m_pszStr != NULL && pszBuf != NULL && this)
 	{
 		delete[] m_pszStr;
 		m_pszStr = Strdup(pszBuf);
@@ -239,7 +246,7 @@ String& String::operator=(const char* pszBuf)
 
 String& String::operator=(const String& rccoObj)
 {
-	if (&rccoObj != this)		//wenn man string1 = string1 machen würde, würde es abstürzen weil es ja davor deletet wird und dann nochmal aufgerufen
+	if (&rccoObj != this && this)		//wenn man string1 = string1 machen würde, würde es abstürzen weil es ja davor deletet wird und dann nochmal aufgerufen
 	{
 		delete[] m_pszStr;
 		m_pszStr = Strdup(rccoObj.GetStr());
@@ -251,6 +258,10 @@ String& String::operator=(const String& rccoObj)
 bool String::operator==(const String& rccoObj)
 {
 	bool identical = false;
+	if(!this)				//if this == NULL leave immediately
+	{
+		return identical;
+	}
 	if(Strcmp(this->m_pszStr, rccoObj.GetStr()) )	//strcmp returns 0 if they are identical
 	{
 		identical = false;
@@ -264,7 +275,7 @@ bool String::operator==(const String& rccoObj)
 bool String::operator!=(const String& rccoObj)
 {
 	bool different = false;
-	if(Strcmp(this->m_pszStr, rccoObj.GetStr()) )	//strcmp returns 0 if they are identical
+	if(this && Strcmp(this->m_pszStr, rccoObj.GetStr()) )	//strcmp returns 0 if they are identical
 	{
 		different = true;
 	}
@@ -274,7 +285,7 @@ bool String::operator!=(const String& rccoObj)
 bool String::operator>=(const String& rccoObj)
 {
 	bool bLessorequal = false;
-	if(Strcmp(this->m_pszStr, rccoObj.GetStr()) >= 0 )	//strcmp returns 0 if they are identical
+	if(this && Strcmp(this->m_pszStr, rccoObj.GetStr()) >= 0 )	//strcmp returns 0 if they are identical
 	{
 		bLessorequal = true;
 	}
@@ -284,7 +295,7 @@ bool String::operator>=(const String& rccoObj)
 bool String::operator<=(const String& rccoObj)
 {
 	bool bBiggerequal = false;
-	if(Strcmp(this->m_pszStr, rccoObj.GetStr()) <= 0 )	//strcmp returns 0 if they are identical
+	if(this && Strcmp(this->m_pszStr, rccoObj.GetStr()) <= 0 )	//strcmp returns 0 if they are identical
 	{
 		bBiggerequal = true;
 	}
@@ -295,7 +306,7 @@ bool String::operator<=(const String& rccoObj)
 bool String::operator<(const String& rccoObj)
 {
 	bool bBigger = false;
-	if(Strcmp(this->m_pszStr, rccoObj.GetStr()) < 0 )	//strcmp returns 0 if they are identical
+	if(this && Strcmp(this->m_pszStr, rccoObj.GetStr()) < 0 )	//strcmp returns 0 if they are identical
 	{
 		bBigger = true;
 	}
@@ -306,7 +317,7 @@ bool String::operator<(const String& rccoObj)
 bool String::operator>(const String& rccoObj)
 {
 	bool bLess = false;
-	if(Strcmp(this->m_pszStr, rccoObj.GetStr()) > 0 )	//strcmp returns 0 if they are identical
+	if(this && Strcmp(this->m_pszStr, rccoObj.GetStr()) > 0 )	//strcmp returns 0 if they are identical
 	{
 		bLess = true;
 	}
@@ -316,7 +327,7 @@ bool String::operator>(const String& rccoObj)
 char String::operator[](int i) const
 {
 	char cReturn = NULL;
-	if(m_pszStr && i >= 0 && i <= Strlen(m_pszStr)-1 )
+	if(this && m_pszStr && i >= 0 && i <= Strlen(m_pszStr)-1 )
 		cReturn = m_pszStr[i];
 	return cReturn;
 }

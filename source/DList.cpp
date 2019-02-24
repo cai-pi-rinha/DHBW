@@ -4,8 +4,8 @@
 // constructor
 DList::DList(DestroyFunc pfn)
 {
-    destroyFunc_ptr = pfn;  /* pointer to function which is capable of deleting the list's payload properly */
-	DNode* newStart = new DNode(NULL, NULL, NULL, this); //dritter müsste end of chain sein aber den gibts ja noch nicht?
+    destroyFunc_ptr = pfn;			/* pointer to function which is capable of deleting the list's payload properly */
+	DNode* newStart = new DNode(NULL, NULL, NULL, this); 
 	start_of_chain = newStart;
 	start_of_chain->insertAfter(NULL);						//create endOfchain
 	end_of_chain = start_of_chain->GetNext();
@@ -31,14 +31,16 @@ int DList::Insert(void* obj)    /** Insert new element at end of list */
 
 void DList::Empty(void) /** kills entire list */
 {
-    while(start_of_chain->GetNext())
+    while(start_of_chain->GetNext()->GetNext())		//we need 2 getNext because we don't want to delete end_of_chain
         DeleteAt(0);
-	number_of_elements = 0;
+	RefreshNumberOfElements();
 }
 
 void* DList::GetAt(int index)
 {
-    DNode* DNode_element = this->get_DNode_element(index);
+	DNode* DNode_element = NULL;
+    if(index >= 0 && index < number_of_elements )
+		DNode_element = this->get_DNode_element(index);
     return DNode_element ? DNode_element->GetObject() : NULL;
 }
 
@@ -133,10 +135,9 @@ DestroyFunc DList::getDestroyFuncPtr(void) const
 
 void DList::RefreshNumberOfElements(void) 
 {
-    //int counter = -1;
 	int counter = 0;
     DNode* current = start_of_chain->GetNext();
-    while(current)
+    while(current->GetNext() )		//check if we are already at end of chain
     {
         current = current->GetNext();
         counter++;

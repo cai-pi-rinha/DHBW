@@ -13,7 +13,7 @@ typedef void (*DestroyFunc)(void*); /* used in DeleteAt() */
 class DList : public ContainerInterface
 {
 private:
-	DNode* start_of_chain; /* start and end of chain as constant ?? */
+	DNode* start_of_chain;	/*note that start and end of chain are both empty! both don't contain payload */
 	DNode* end_of_chain;
 	int number_of_elements;
 	DestroyFunc destroyFunc_ptr;

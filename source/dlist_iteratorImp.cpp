@@ -25,22 +25,30 @@ void Dlist_IteratorImp::set(DNode* dnode)
 
 void* Dlist_IteratorImp::Current()
 {
-	return m_current != NULL ? m_current->GetObject() : NULL;
+	if (m_current->GetNext() != NULL && m_current->GetPrev() != NULL)	//check if we are at start or end of chain
+		return m_current->GetObject();
+	return NULL;
 }
 
 void* Dlist_IteratorImp::Next()
 {
-	if(m_current)
+	if (m_current && m_current->GetNext()->GetNext())	//last element is endofchain, don't forget it. It's empty
+	{
 		m_current = m_current->GetNext();
-	return m_current != NULL ? m_current->GetObject() : NULL;
+		return m_current->GetObject();
+	}
+	return NULL;
 }
 
 void* Dlist_IteratorImp::Prev()
 {
 
-	if (m_current)
+	if (m_current && m_current->GetPrev()->GetPrev())	//first element is starofchain, empty as well
+	{
 		m_current = m_current->GetPrev();
-	return m_current != NULL ? m_current->GetObject(): NULL;
+		return m_current->GetObject();
+	}
+	return NULL;
 }
 
 
@@ -49,7 +57,7 @@ void* Dlist_IteratorImp::Last()
 
 	if (m_current)
 	{
-		while (m_current->GetNext())	//count until next is NULL -> last element
+		while (m_current->GetNext()->GetNext() )	//count we reach endofchain -> last element which is empty
 			m_current = m_current->GetNext();
 	}
 	return m_current != NULL ? m_current->GetObject() : NULL;
@@ -60,7 +68,7 @@ void* Dlist_IteratorImp::First()
 
 	if (m_current)
 	{
-		while (m_current->GetPrev())	//count until previous is NULL -> first element
+		while (m_current->GetPrev()->GetPrev() )	//count until previous is NULL -> first element
 			m_current = m_current->GetPrev();
 	}
 	return m_current != NULL ? m_current->GetObject() : NULL;
