@@ -39,6 +39,7 @@ void* DNode::GetObject(void)
 
 void DNode::Remove(void)   /** delete the payload */
 {
+	//sollte doch das dnode remove, nicht die payload löschen?
     if(payload)
     {
         DestroyFuncDNode destroyFunc_ptr = myList->getDestroyFuncPtr();
@@ -57,14 +58,15 @@ int DNode::insertBefore(void* obj)  /** insert a new element in front of the cur
 	 * 2) change arguments of this object:
 	 *      prev-pointer    = created object
 	 */
-    if(this->prev == NULL)  /* quit if there is no DNode object in front of this one */
-        return -1;
-    else
-    {
-        DNode* obj_to_insert    = new DNode(obj, this->prev, this, this->myList);
-        this->prev->next        = obj_to_insert;
-        this->prev              = obj_to_insert;
-    }
+    //if(this->prev == NULL)  /* quit if there is no DNode object in front of this one */
+    //    return -1;
+	//macht für mich keinen sinn, es soll ja trotzdem was eingefügt werden
+   
+    DNode* obj_to_insert    = new DNode(obj, this->prev, this, this->myList);
+	if (this->prev != NULL)
+		this->prev->next        = obj_to_insert;
+	this->prev              = obj_to_insert;
+    
 
     return 0;
 }
@@ -73,17 +75,17 @@ int DNode::insertAfter(void* obj)  /** insert a new element after the currently 
 {
     /* compare with insertBefore() */
 
-    if(this->next == NULL) /* quit if there is no DNode object after this one */ 
-        return -1;
+    //if(this->next == NULL) /* quit if there is no DNode object after this one */ 
+    //    return -1;
 
 
 		//wat? warum denn das? ich dachte genau dann soll es ja null sein, weil es grad danach keins gibt
-    else
-    {
-        DNode* obj_to_insert    = new DNode(obj, this, this->next, this->myList);
-        this->next->prev        = obj_to_insert;
-        this->next              = obj_to_insert;
-    }
+   
+        DNode* dNode_to_insert    = new DNode(obj, this, this->next, this->myList);
+       if(this->next != NULL)
+		   this->next->prev        = dNode_to_insert;
+        this->next              = dNode_to_insert;
+    
 
     return 0;
 }

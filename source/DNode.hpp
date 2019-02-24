@@ -17,7 +17,7 @@ private:
 public:
     DNode(DList* myListPtr = NULL);
     DNode(void* payload, DNode* prev, DNode* next, DList* myListPtr = NULL);
-    virtual ~DNode();
+    ~DNode();
 
 	DNode* GetNext() const;
 	DNode* GetPrev() const;

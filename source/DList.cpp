@@ -5,17 +5,17 @@
 DList::DList(DestroyFunc pfn)
 {
     destroyFunc_ptr = pfn;  /* pointer to function which is capable of deleting the list's payload properly */
-	DNode* newStart = new DNode;
-	DNode* newEnd = new DNode;
+	DNode* newStart = new DNode(NULL, NULL, NULL, this); //dritter müsste end of chain sein aber den gibts ja noch nicht?
+	start_of_chain = newStart;
+	start_of_chain->insertAfter(NULL);						//create endOfchain
+	end_of_chain = start_of_chain->GetNext();
+    number_of_elements  = 0;
 
+/*
+	DNode* newEnd	= new DNode(NULL, newStart, NULL, this);
 	start_of_chain = newStart;
 	end_of_chain = newEnd;
-    /*start_of_chain = DNode(NULL, NULL, &end_of_chain, this);
-    end_of_chain = DNode(NULL, &start_of_chain, NULL, this);
-	was soll das machen?*/
-
-
-    number_of_elements  = 0;
+*/
 }
 
 IteratorImp* DList::CreateIteratorImp() const
@@ -26,7 +26,6 @@ IteratorImp* DList::CreateIteratorImp() const
 
 int DList::Insert(void* obj)    /** Insert new element at end of list */
 {
-	number_of_elements++;
     return InsertLast(obj);
 }
 
@@ -48,13 +47,13 @@ int DList::Count(void) const
 
 int DList::InsertFirst(void* obj)   /** insert a new object as first element of the list */
 {
-    number_of_elements++;
+	number_of_elements++;
     return start_of_chain->insertAfter(obj);
 }
 
 int DList::InsertLast(void* obj)    /** insert a new object as last element of the list */
 {
-    number_of_elements++;
+	number_of_elements++;
 	return end_of_chain->insertBefore(obj);
 }
 
@@ -63,15 +62,18 @@ int DList::InsertAt(int index, void* obj)   /** insert a new object at position 
     /* 1) go to element number (index)
      * 2) use element.insertBefore
      */
-    DNode* temp = get_DNode_element(index);
-    if(temp)    /* temp is no null-pointer, hence insert the object */
-    {
-        temp->insertBefore(obj);
-        number_of_elements++;
-    }
-    else        /* temp is a null-pointer; quit with error -1 */
-        return -1;
-    return 0;
+	if(index >=0 && index <=number_of_elements)
+	{ 
+		DNode* temp = get_DNode_element(index);
+		if(temp)    /* temp is no null-pointer, hence insert the object */
+		{
+			temp->insertBefore(obj);
+			number_of_elements++;
+		}
+		else        /* temp is a null-pointer; quit with error -1 */
+			return -1;
+	}
+	return 0;
 }
 
 void* DList::RemoveAt(int index)    /** delete list element; payload stays alive ~somewhere~ */
@@ -131,7 +133,8 @@ DestroyFunc DList::getDestroyFuncPtr(void) const
 
 void DList::RefreshNumberOfElements(void) 
 {
-    int counter = -1;
+    //int counter = -1;
+	int counter = 0;
     DNode* current = start_of_chain->GetNext();
     while(current)
     {

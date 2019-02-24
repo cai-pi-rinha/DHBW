@@ -14,13 +14,15 @@ int main()
 	String String1 = "Gustav Gans";
 	String String2 = "Arnold Schwarzenegger";
 	String String3 = "Stinkstiefel";
-	cout << String1.GetStr() << endl;
-	DList* Liste = new DList();
+	cout << "erstes cout ohne Liste: " << String1.GetStr() << endl;
+	
+	DList* Liste = new DList(NULL);
 	Liste->Insert(String1);
 	Liste->Insert(String2);
 	Liste->Insert(String3);
 	Iterator* it = Liste->MakeIterator();
-	String* deiMudda = (String*)it->First();
+	//String* Bla = (String*)it->First();		
+		//so funktioniert dann typconversion!
 	cout << "Ausgabe direkt: "<< String1.GetStr()<< " Ausgabe ueber iterator" << ((String*)it->First())->GetStr()<< endl;
 	//static_cast<Iterator*>
 }
