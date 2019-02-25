@@ -59,7 +59,7 @@ int main()
 		if (puffer)
 			cout << "GetAt(" << i << ") : " << ((String*)Liste1.GetAt(i))->GetStr() << endl;
 		else
-			cout << "Zugriff ausserhalb der Dlist! Ueberhitzung der System! Index: " << i << endl;
+			cout << "Zugriff ausserhalb der Dlist! Ueberhitzung der Systeme! Index: " << i << endl;
 	}
 	
 
@@ -81,8 +81,10 @@ int main()
 
 	//Test DeleteAt
 	cout << "\n\n\nTest DeletAt: " << endl;
-	cout << "Loesche String: "<< ((String*)Liste1.GetAt(3))->GetStr() <<endl << "Ausgabe von Container danach:"<<endl; 
-	Liste1.DeleteAt(3);
+	int iToDelete = 4;
+	if(Liste1.GetAt(iToDelete))
+		cout << "Loesche String: "<< ((String*)Liste1.GetAt(iToDelete))->GetStr() <<endl << "Ausgabe von Container danach:"<<endl;
+	Liste1.DeleteAt(iToDelete);
 	for (int i = 0; i < 5; i++)
 	{
 		const char* puffer = ((String*)Liste1.GetAt(i))->GetStr();
@@ -92,8 +94,26 @@ int main()
 
 
 
+	//Test RemoveAt
+	cout << "\n\n\nTest RemoveAt: " << endl;
+	iToDelete = 0;
+	if (Liste1.GetAt(iToDelete))
+		cout << "Loesche String: "<< ((String*)Liste1.GetAt(iToDelete))->GetStr() <<endl << "Ausgabe von Container danach:"<<endl;
+	Liste1.DeleteAt(iToDelete);
+	for (int i = 0; i < 5; i++)
+	{
+		const char* puffer = ((String*)Liste1.GetAt(i))->GetStr();
+		if (puffer)
+			cout << "String an Stelle" << i << ": " << ((String*)Liste1.GetAt(i))->GetStr() << endl;
+	}
 
 
+	//oprator []
+	i = 2;
+	if (Liste1[i])
+		cout << "\n\n\nTest operator[]: Liste[" << i << "] = \"" << ((String*)Liste1[i])->GetStr() << "\"" << endl;
+	else
+		cout << "\n\n\nTest operator[]: Falscher Zugrifft an Stelle Liste[" << i << "]" << endl;
 
 	//das geht noch nicht! stürzt ab weil iterator wo steht wo er nicht sollte
 	/*Iterator* it1 = Liste1.MakeIterator();

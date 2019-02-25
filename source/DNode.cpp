@@ -39,15 +39,24 @@ void* DNode::GetObject(void)
 
 void DNode::Remove(void)   /** delete the payload */
 {
-	//sollte doch das dnode remove, nicht die payload löschen?
-    if(payload)
-    {
-        DestroyFuncDNode destroyFunc_ptr = myList->getDestroyFuncPtr();
-        if(destroyFunc_ptr)
-            (*destroyFunc_ptr)(payload);    /* delete payload */
-    }
-    payload = NULL;
+	if (this->next != NULL)
+		this->next->prev = prev;
+	if (this->prev != NULL)
+		this->prev->next = next;
 }
+
+//void DNode::Remove(void)   /** delete the payload */
+//{
+//	//sollte doch das dnode remove, nicht die payload löschen?
+//    if(payload)
+//    {
+//        DestroyFuncDNode destroyFunc_ptr = myList->getDestroyFuncPtr();
+//        if(destroyFunc_ptr)
+//            (*destroyFunc_ptr)(payload);    /* delete payload */
+//    }
+//    payload = NULL;
+//}			
+//macht für mich keinen sinn
 
 int DNode::insertBefore(void* obj)  /** insert a new element in front of the currently selected element */
 {

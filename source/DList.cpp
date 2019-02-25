@@ -10,12 +10,6 @@ DList::DList(DestroyFunc pfn)
 	start_of_chain->insertAfter(NULL);						//create endOfchain
 	end_of_chain = start_of_chain->GetNext();
     number_of_elements  = 0;
-
-/*
-	DNode* newEnd	= new DNode(NULL, newStart, NULL, this);
-	start_of_chain = newStart;
-	end_of_chain = newEnd;
-*/
 }
 
 IteratorImp* DList::CreateIteratorImp() const
@@ -33,7 +27,7 @@ void DList::Empty(void) /** kills entire list */
 {
     while(start_of_chain->GetNext()->GetNext())		//we need 2 getNext because we don't want to delete end_of_chain
         DeleteAt(0);
-	RefreshNumberOfElements();
+	//refresh is already done at delete
 }
 
 void* DList::GetAt(int index)
@@ -49,14 +43,16 @@ int DList::Count(void) const
 
 int DList::InsertFirst(void* obj)   /** insert a new object as first element of the list */
 {
-	number_of_elements++;
-    return start_of_chain->insertAfter(obj);
+	int iReturn = start_of_chain->insertAfter(obj);
+	RefreshNumberOfElements();
+	return iReturn;
 }
 
 int DList::InsertLast(void* obj)    /** insert a new object as last element of the list */
 {
-	number_of_elements++;
-	return end_of_chain->insertBefore(obj);
+	int iReturn = end_of_chain->insertBefore(obj);
+	RefreshNumberOfElements();
+	return iReturn;
 }
 
 int DList::InsertAt(int index, void* obj)   /** insert a new object at position number <index> */
@@ -70,7 +66,7 @@ int DList::InsertAt(int index, void* obj)   /** insert a new object at position 
 		if(temp)    /* temp is no null-pointer, hence insert the object */
 		{
 			temp->insertBefore(obj);
-			number_of_elements++;
+			RefreshNumberOfElements();
 		}
 		else        /* temp is a null-pointer; quit with error -1 */
 			return -1;
@@ -82,11 +78,11 @@ void* DList::RemoveAt(int index)    /** delete list element; payload stays alive
 {
     DNode* temp = get_DNode_element(index);
     void* payload = NULL;
-    if(temp)    /* skip if temp is a null pointer */
+	if (temp && index >= 0 && index < number_of_elements)   /* skip if temp is a null pointer or index out of bounds */
     {
         payload = temp->GetObject();   /* save the address of the removed payload */
-        delete temp;                /* delete the list element */
-        number_of_elements--;
+		temp->Remove();					//reorder DNode pointers
+        delete temp;		 //number of elements is refreshed at ~DNode()
     }
     return payload; /* return a pointer to the removed payload */
 }
@@ -94,34 +90,36 @@ void* DList::RemoveAt(int index)    /** delete list element; payload stays alive
 int DList::DeleteAt(int index)  /** delete list element AND payload  */
 {
     DNode* temp = get_DNode_element(index);
-    void* payload = NULL;
-    if(temp)
+    if(temp && index >= 0 && index < number_of_elements)
     {
+		void* payload = NULL;
         payload = temp->GetObject();           /* save the address of the removed payload */
         if(destroyFunc_ptr)
             (*destroyFunc_ptr)(payload);    /* delete payload */
-        delete temp;
-        number_of_elements--;
-    }
+		temp->Remove();					//reorder DNode pointers
+		delete temp;					//number of elements is refreshed at ~DNode()
+	}
     return temp ? 0 : -1;
 }
 
 void* DList::operator [](int index)
 {
-    DNode* temp = get_DNode_element(index);
-    return temp ? temp->GetObject() : NULL;  /* return NULL if there is no element at position "index" */
+	DNode* temp = NULL;
+	if (index >= 0 && index < number_of_elements)
+		temp = this->get_DNode_element(index);
+	return temp ? temp->GetObject() : NULL; /* return NULL if there is no element at position "index" */
 }
 
 DNode* DList::get_DNode_element(int index)
 {
-    /* iterate through the list until entry number "index" */
+	/* iterate through the list until entry number "index" */
 	DNode* current_element = start_of_chain->GetNext();
-    while(index && current_element)
-    {
-        current_element = current_element->GetNext();
-        index--;
-    }
-    return current_element;
+	while (index && current_element)
+	{
+		current_element = current_element->GetNext();
+		index--;
+	}
+	return current_element;
 }
 
 DNode* DList::GetFirst(void) const
