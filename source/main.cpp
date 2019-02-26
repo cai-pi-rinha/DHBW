@@ -9,6 +9,12 @@
 //kompilieren und direkt exe erzeugen mit namen der exe angebbar: >cl /Fe:test.exe string.cpp main.cpp
 using namespace std;
 
+void DestroyStringPointer(void* obj)
+{
+	if (obj != NULL)
+		delete (String*)obj;
+}
+
 int main()
 {
 	String String1 = "Gustav Gans";
@@ -114,6 +120,41 @@ int main()
 		cout << "\n\n\nTest operator[]: Liste[" << i << "] = \"" << ((String*)Liste1[i])->GetStr() << "\"" << endl;
 	else
 		cout << "\n\n\nTest operator[]: Falscher Zugrifft an Stelle Liste[" << i << "]" << endl;
+
+	//Test InsertAt
+	String String6 = "InsertAt String";
+	i = 3;
+	cout << "\n\n\nTest InsertAt: Insert an Stelle "<< i << endl;
+	Liste1.InsertAt(i, &String6);
+	Iterator* it3 = Liste1.MakeIterator();
+	do	{
+		cout << "Stringausgabe: " << ((String*)it3->Current())->GetStr() << endl;
+	} while (it3->Next());
+
+
+
+	//Test Destruktor mit löschung der payload
+	DList* Liste2 = new DList(&DestroyStringPointer);
+	String* stringPtr1 = new String("Nummer 1/2");
+	String* stringPtr2 = new String("Nummer 2/2");
+	Liste2->Insert(stringPtr1);
+	Liste2->Insert(stringPtr2);
+	cout << "\n\n\nTest Destruktor: Ausgabe aller Strings:" << endl;
+
+	for (int i = 0; i < 5; i++)
+	{
+		const char* puffer = ((String*)Liste2->GetAt(i))->GetStr();
+		if (puffer)
+			cout << "String an Stelle" << i << ": " << ((String*)Liste2->GetAt(i))->GetStr() << endl;
+	}
+	String* Test = stringPtr1;
+	cout << "Ausgabe des Strings nach delete: ";
+	if (Test)
+		cout << stringPtr1->GetStr() << endl;
+	else
+		cout << "String wurde geloescht" << endl;
+	delete Liste2;		//stürzt ab wenn ich das vor das cout mache, also wird es wohl stimmen!
+
 
 	//das geht noch nicht! stürzt ab weil iterator wo steht wo er nicht sollte
 	/*Iterator* it1 = Liste1.MakeIterator();

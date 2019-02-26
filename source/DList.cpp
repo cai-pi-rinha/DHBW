@@ -12,6 +12,13 @@ DList::DList(DestroyFunc pfn)
     number_of_elements  = 0;
 }
 
+DList::~DList()
+{
+	if (destroyFunc_ptr)
+	{
+		Empty();		//delete entire list
+	}
+}
 IteratorImp* DList::CreateIteratorImp() const
 {
     Dlist_IteratorImp* DlistIt = new Dlist_IteratorImp(*this);  // create a new DListIteratorImp and return the pointer as IteratorImp
@@ -60,18 +67,21 @@ int DList::InsertAt(int index, void* obj)   /** insert a new object at position 
     /* 1) go to element number (index)
      * 2) use element.insertBefore
      */
-	if(index >=0 && index <=number_of_elements)
-	{ 
+	int iReturn = 0;
+	if (index >= 0 && index <= number_of_elements)
+	{
 		DNode* temp = get_DNode_element(index);
-		if(temp)    /* temp is no null-pointer, hence insert the object */
+		if (temp)    /* temp is no null-pointer, hence insert the object */
 		{
 			temp->insertBefore(obj);
 			RefreshNumberOfElements();
 		}
 		else        /* temp is a null-pointer; quit with error -1 */
-			return -1;
+			iReturn = -1;
 	}
-	return 0;
+	else
+		iReturn = -1;
+	return iReturn;			//if iReturn = -1, something went wrong
 }
 
 void* DList::RemoveAt(int index)    /** delete list element; payload stays alive ~somewhere~ */

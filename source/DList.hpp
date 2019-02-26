@@ -17,14 +17,14 @@ private:
 	DNode* end_of_chain;
 	int number_of_elements;
 	DestroyFunc destroyFunc_ptr;
-
 	DNode* get_DNode_element(int index);
-	//~DList(); hier sollten die elemente gelöscht werden oder?
+
 protected:
     
 
 public:
     DList(DestroyFunc pfn=NULL);
+	~DList(); 
 	IteratorImp* CreateIteratorImp() const;
     int Insert(void* obj);
     void Empty();
