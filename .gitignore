@@ -4,8 +4,5 @@ ignore all files (...) :
 (...) except of those:
 !source/
 !*readme*
-!*.cpp
-!*.hpp
-
-but do again ignore those:
-string.*
+!*TCP*.cpp
+!*TCP*.hpp
