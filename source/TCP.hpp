@@ -12,6 +12,7 @@
 #include <ws2tcpip.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "string.hpp"
 // Need to link with Ws2_32.lib
 #pragma comment (lib, "Ws2_32.lib")
 
@@ -23,11 +24,13 @@ class TCP
     private:
         struct addrinfo source;
         struct addrinfo dest;
-        virtual int init_socket() = 0;
-        virtual int send() = 0;
+        virtual int init_socket(void) = 0;
+        virtual int send_tcp(String* data) = 0;
+        virtual String* receive_polling(void) = 0;
 
     public:
         TCP();
+        TCP(String* source_ip, uint16_t source_port, String* dest_ip, uint16_t dest_port);
         virtual ~TCP();
         TCP(const TCP& other);
 
