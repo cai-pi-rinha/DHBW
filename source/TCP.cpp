@@ -89,3 +89,70 @@ int TCP::init_socket(void)
     return 0;
 }
 
+int TCP::wait_for_receive(SOCKET* ClientSocket)
+{
+    int result = 0;
+    char* buffer;
+    do
+    {
+        buffer  = (char*)malloc(recvbuflen+4); // 4 bytes containing the number of bytes in the buffer + actual buffer itself
+        result = recv(*ClientSocket, (buffer+4), recvbuflen, 0);
+        *(buffer+0) = (result >> 24) & 0xff;
+        *(buffer+1) = (result >> 16) & 0xff;
+        *(buffer+2) = (result >>  8) & 0xff;
+        *(buffer+3) = (result      ) & 0xff;
+
+        if (result > 0) {
+            /*
+             *  2 options:
+             *  A) received less than 'recvbuflen' bytes => transmission completed ~> start processing of data
+             *  b) received exactly 'recvbuflen' bytes => transmission probably incomplete ~> continue receiving
+             */
+            receive_buffer_list.Insert(buffer); // add a new buffer-element to the list
+        }
+        else if (result == 0)
+        {
+            printf("Connection closing...\n");
+            return 0;
+        }
+        else  {
+            printf("recv failed with error: %d\n", WSAGetLastError());
+            closesocket(*ClientSocket);
+            WSACleanup();
+            return -1;
+        }
+    }while(result == recvbuflen);   // continue receiving until less then max. number of bytes are received
+
+    return 0;
+}
+
+int TCP::send_tcp(String* data, SOCKET* DestinationSocket)
+{
+    int result = SOCKET_ERROR;
+    result = send( *DestinationSocket, data->GetStr(), data->Length(), 0 );
+    if (result == SOCKET_ERROR) {
+        printf("send failed with error: %d\n", WSAGetLastError());
+        closesocket(*DestinationSocket);
+        WSACleanup();
+        return 1;
+    }
+    return 0;
+}
+
+int TCP::terminate_connection(SOCKET* destinationSocket)
+{
+    // shutdown the connection since we're done
+    int result = SOCKET_ERROR;
+    result = shutdown(*destinationSocket, SD_SEND);
+    if (result == SOCKET_ERROR) {
+        printf("shutdown failed with error: %d\n", WSAGetLastError());
+        closesocket(*destinationSocket);
+        WSACleanup();
+        return 1;
+    }
+    // cleanup
+    closesocket(*destinationSocket);
+    WSACleanup();
+
+    return 0;
+}

@@ -12,10 +12,7 @@ class TCP_server : public TCP
 
 
         int wait_for_query(void);
-        int wait_for_receive();
         int process_data();
-        int send_tcp(String* data);
-        int terminate_connection(void);
 
     public:
         TCP_server(int buffer_size = DEFAULT_BUFLEN);

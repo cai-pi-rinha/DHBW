@@ -42,14 +42,16 @@ class TCP
 
 
         int init_socket(void); /** contains creation of socket() + call of bind() */
-        virtual int send_tcp(String* data) = 0;
-        virtual int wait_for_receive() = 0;
+        int wait_for_receive(SOCKET* ClientSocket);
+        int send_tcp(String* data, SOCKET* DestinationSocket);
+        int terminate_connection(SOCKET* destinationSocket);
 
     public:
         TCP(int buffer_size=DEFAULT_BUFLEN);
         TCP(const char* source_ip, const char* source_port, const char* dest_ip, const char* dest_port, int buffer_size);
         virtual ~TCP();
         TCP(const TCP& other);
+
 
     protected:
 
