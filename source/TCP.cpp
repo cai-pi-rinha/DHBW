@@ -1,5 +1,9 @@
 #include "TCP.hpp"
 
+/*
+ *      https://docs.microsoft.com/en-us/windows/desktop/winsock/complete-client-code
+ */
+
 void DestroyReceiveBuffer(void* pv)
 { free(pv); }   // OS keeps track of the allocated memory at this position
 
@@ -56,9 +60,10 @@ int TCP::init_socket(void)
     hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_protocol = IPPROTO_TCP;
-    hints.ai_flags = AI_PASSIVE;
+    hints.ai_flags = AI_PASSIVE;    // TODO: steht beim client nicht dabei
 
     // Resolve the server address and port
+    // TODO: statt NULL steht beim client hier argv[1]
     iResult = getaddrinfo(NULL, source_port->GetStr(), &hints, &result);
     if ( iResult != 0 ) {
         printf("getaddrinfo failed with error: %d\n", iResult);
