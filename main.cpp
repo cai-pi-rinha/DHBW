@@ -1,4 +1,6 @@
 #include <iostream>
+#include "source/string.hpp"
+#include "source/TCP.hpp"
 
 using namespace std;
 

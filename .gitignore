@@ -6,3 +6,6 @@ ignore all files (...) :
 !*readme*
 !*.cpp
 !*.hpp
+
+but do again ignore those:
+string.*
