@@ -41,7 +41,7 @@ class TCP
 
         int init_socket(void); /** contains creation of socket() + call of bind() */
         virtual int send_tcp(String* data) = 0;
-        virtual String* receive_polling(void) = 0;
+        virtual int wait_for_receive() = 0;
 
     public:
         TCP();

@@ -12,8 +12,9 @@ class TCP_server : public TCP
 
 
         int init_socket_old(void);
+        int wait_for_query(void);
         int send_tcp(String* data);
-        String* receive_polling(void);
+        int wait_for_receive();
 
     public:
         TCP_server();

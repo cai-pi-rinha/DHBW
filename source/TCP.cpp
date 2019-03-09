@@ -80,5 +80,7 @@ int TCP::init_socket(void)
         WSACleanup();
         return 1;
     }
+
+    return 0;
 }
 

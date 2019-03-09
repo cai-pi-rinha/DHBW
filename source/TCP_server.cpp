@@ -23,10 +23,8 @@ TCP_server::TCP_server(const TCP_server& other)
     //copy ctor
 }
 
-int TCP_server::init_socket_old(void)
+int TCP_server::wait_for_query(void)
 {
-
-
     freeaddrinfo(result);
 
     iResult = listen(MasterSocket, SOMAXCONN);
@@ -45,10 +43,74 @@ int TCP_server::init_socket_old(void)
         WSACleanup();
         return 1;
     }
-
     // No longer need server socket
     closesocket(MasterSocket);
 
+    return 0;
+}
+
+int TCP_server::wait_for_receive()
+{
+    int result = 0;
+    char buffer[recvbuflen+4] = {0};
+    // create a string of unknown length and add buffer
+    do
+    {
+        result = recv(ClientSocket, &buffer[4], recvbuflen, 0);
+        buffer[0] = (result >> 24) & 0xff;
+        buffer[1] = (result >> 16) & 0xff;
+        buffer[2] = (result >>  8) & 0xff;
+        buffer[3] = (result      ) & 0xff;
+
+        if (result > 0) {
+            printf("Bytes received: %d\n", result);
+            /*
+             *  2 options:
+             *  A) received less than 'recvbuflen' bytes => transmission completed ~> start processing of data
+             *  b) received exactly 'recvbuflen' bytes => transmission probably incomplete ~> continue receiving
+             */
+
+            cout << "-> " << &buffer[4] << endl;
+        }
+        else if (result == 0)
+        {
+            printf("Connection closing...\n");
+            return 0;
+        }
+        else  {
+            printf("recv failed with error: %d\n", WSAGetLastError());
+            closesocket(ClientSocket);
+            WSACleanup();
+            return -1;
+        }
+    }while(result == recvbuflen);   // continue receiving until less then max. number of bytes are received
+
+
+
+    return 0;
+}
+
+int TCP_server::send_tcp(String* data)
+{
+    cout << "send_tcp()" << endl;
+    // Receive until the peer shuts down the connection
+    //do {
+        // Echo the buffer back to the sender
+//            iSendResult = send( ClientSocket, recvbuf, iResult, 0 );
+//            if (iSendResult == SOCKET_ERROR) {
+//                printf("send failed with error: %d\n", WSAGetLastError());
+//                closesocket(ClientSocket);
+//                WSACleanup();
+//                return 1;
+//            }
+//            printf("Bytes sent: %d\n", iSendResult);
+
+    //} while (iResult > 0);
+    return 0;
+}
+
+int TCP_server::init_socket_old(void)
+{
     // Receive until the peer shuts down the connection
     do {
 
@@ -89,22 +151,20 @@ int TCP_server::init_socket_old(void)
     // cleanup
     closesocket(ClientSocket);
     WSACleanup();
+
+    return 0;
 }
 
 int TCP_server::start_server(void)
 {
     init_socket();
-    init_socket_old();
+    wait_for_query();
+    cout << "wait_for_receive()" << endl;
+    wait_for_receive();
+
+    //init_socket_old();
     return 0;
 }
 
 
-int TCP_server::send_tcp(String* data)
-{
-    cout << "send_tcp()" << endl;
-}
 
-String* TCP_server::receive_polling(void)
-{
-    cout << "receive_polling" << endl;
-}
