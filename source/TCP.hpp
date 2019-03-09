@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "string.hpp"
+#include "DList.hpp"
 // Need to link with Ws2_32.lib
 #pragma comment (lib, "Ws2_32.lib")
 
@@ -29,6 +30,7 @@ class TCP
         String* dest_ip;
         String* dest_port;
 
+        DList receive_buffer_list;
         WSADATA wsaData;
         int iResult;
         SOCKET MasterSocket;    // first Socket created (eg. listen-socket of server or communication socket of client)
@@ -44,8 +46,8 @@ class TCP
         virtual int wait_for_receive() = 0;
 
     public:
-        TCP();
-        TCP(const char* source_ip, const char* source_port, const char* dest_ip, const char* dest_port);
+        TCP(int buffer_size=DEFAULT_BUFLEN);
+        TCP(const char* source_ip, const char* source_port, const char* dest_ip, const char* dest_port, int buffer_size);
         virtual ~TCP();
         TCP(const TCP& other);
 

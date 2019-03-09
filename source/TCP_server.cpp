@@ -3,12 +3,13 @@
 
 using namespace std;
 
-TCP_server::TCP_server()
+TCP_server::TCP_server(int buffer_size)
+    : TCP(buffer_size)
 {
 
 }
-TCP_server::TCP_server(const char* port)
-    : TCP("", port, "", "")
+TCP_server::TCP_server(const char* port, int buffer_size)
+    : TCP("", port, "", "", buffer_size)
 {
 
 }
@@ -52,25 +53,23 @@ int TCP_server::wait_for_query(void)
 int TCP_server::wait_for_receive()
 {
     int result = 0;
-    char buffer[recvbuflen+4] = {0};
-    // create a string of unknown length and add buffer
+    char* buffer;
     do
     {
-        result = recv(ClientSocket, &buffer[4], recvbuflen, 0);
-        buffer[0] = (result >> 24) & 0xff;
-        buffer[1] = (result >> 16) & 0xff;
-        buffer[2] = (result >>  8) & 0xff;
-        buffer[3] = (result      ) & 0xff;
+        buffer  = (char*)malloc(recvbuflen+4); // 4 bytes containing the number of bytes in the buffer + actual buffer itself
+        result = recv(ClientSocket, (buffer+4), recvbuflen, 0);
+        *(buffer+0) = (result >> 24) & 0xff;
+        *(buffer+1) = (result >> 16) & 0xff;
+        *(buffer+2) = (result >>  8) & 0xff;
+        *(buffer+3) = (result      ) & 0xff;
 
         if (result > 0) {
-            printf("Bytes received: %d\n", result);
             /*
              *  2 options:
              *  A) received less than 'recvbuflen' bytes => transmission completed ~> start processing of data
              *  b) received exactly 'recvbuflen' bytes => transmission probably incomplete ~> continue receiving
              */
-
-            cout << "-> " << &buffer[4] << endl;
+            receive_buffer_list.Insert(buffer); // add a new buffer-element to the list
         }
         else if (result == 0)
         {
@@ -90,55 +89,37 @@ int TCP_server::wait_for_receive()
     return 0;
 }
 
+int TCP_server::process_data()  /** print received data onto the screen */
+{
+    // process data in DList; ex. print it:
+    cout << "received following data: " << endl;
+    Iterator* read_data = receive_buffer_list.MakeIterator();
+    do
+    {
+        cout << (((char*)read_data->Current())+4);
+        // if last element in list: check first 4 bytes for length of data within this buffer-packet
+    }while(read_data->Next());
+    receive_buffer_list.Empty();
+    delete(read_data);
+    cout << endl;
+
+}
+
 int TCP_server::send_tcp(String* data)
 {
-    cout << "send_tcp()" << endl;
-    // Receive until the peer shuts down the connection
-    //do {
-        // Echo the buffer back to the sender
-//            iSendResult = send( ClientSocket, recvbuf, iResult, 0 );
-//            if (iSendResult == SOCKET_ERROR) {
-//                printf("send failed with error: %d\n", WSAGetLastError());
-//                closesocket(ClientSocket);
-//                WSACleanup();
-//                return 1;
-//            }
-//            printf("Bytes sent: %d\n", iSendResult);
-
-    //} while (iResult > 0);
+    int result = SOCKET_ERROR;
+    result = send( ClientSocket, data->GetStr(), data->Length(), 0 );
+    if (result == SOCKET_ERROR) {
+        printf("send failed with error: %d\n", WSAGetLastError());
+        closesocket(ClientSocket);
+        WSACleanup();
+        return 1;
+    }
     return 0;
 }
 
-int TCP_server::init_socket_old(void)
+int TCP_server::terminate_connection(void)
 {
-    // Receive until the peer shuts down the connection
-    do {
-
-        iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
-        if (iResult > 0) {
-            printf("Bytes received: %d\n", iResult);
-
-        // Echo the buffer back to the sender
-            iSendResult = send( ClientSocket, recvbuf, iResult, 0 );
-            if (iSendResult == SOCKET_ERROR) {
-                printf("send failed with error: %d\n", WSAGetLastError());
-                closesocket(ClientSocket);
-                WSACleanup();
-                return 1;
-            }
-            printf("Bytes sent: %d\n", iSendResult);
-        }
-        else if (iResult == 0)
-            printf("Connection closing...\n");
-        else  {
-            printf("recv failed with error: %d\n", WSAGetLastError());
-            closesocket(ClientSocket);
-            WSACleanup();
-            return 1;
-        }
-
-    } while (iResult > 0);
-
     // shutdown the connection since we're done
     iResult = shutdown(ClientSocket, SD_SEND);
     if (iResult == SOCKET_ERROR) {
@@ -147,7 +128,6 @@ int TCP_server::init_socket_old(void)
         WSACleanup();
         return 1;
     }
-
     // cleanup
     closesocket(ClientSocket);
     WSACleanup();
@@ -157,12 +137,26 @@ int TCP_server::init_socket_old(void)
 
 int TCP_server::start_server(void)
 {
+    int dummy_counter = 0;
+    String welcome_msg("Buenos dias senor(a)!\n");
+    do
+    {
     init_socket();
     wait_for_query();
-    cout << "wait_for_receive()" << endl;
-    wait_for_receive();
 
-    //init_socket_old();
+        cout << "waiting for something to do..." << endl;
+        wait_for_receive();
+        process_data();
+
+        dummy_counter = (dummy_counter+1)&0xf;
+        if (dummy_counter == 0)
+            dummy_counter = 1;
+        for(int i=0; i<dummy_counter; i++)
+            send_tcp(&welcome_msg);
+        terminate_connection();
+
+    }while(1);
+
     return 0;
 }
 

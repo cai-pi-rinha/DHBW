@@ -1,21 +1,27 @@
 #include "TCP.hpp"
 
-TCP::TCP()
+void DestroyReceiveBuffer(void* pv)
+{ free(pv); }   // OS keeps track of the allocated memory at this position
+
+TCP::TCP(int buffer_size)
 {
     this->source_ip     = new String("127.0.0.1");
     this->source_port   = new String(DEFAULT_PORT);
     this->dest_ip       = new String("127.0.0.1");
     this->dest_port     = new String(DEFAULT_PORT);
     cout << "source port filled in TCP std-constructor with: " << source_port->GetStr() << endl;
+    recvbuflen = buffer_size;
+    receive_buffer_list = *(new DList(&DestroyReceiveBuffer));
 }
 
-TCP::TCP(const char* source_ip, const char* source_port, const char* dest_ip, const char* dest_port)
+TCP::TCP(const char* source_ip, const char* source_port, const char* dest_ip, const char* dest_port, int buffer_size)
+    : TCP(buffer_size) // call the main TCP constructor and subsequently make a few changes
 {
     this->source_ip     = new String(source_ip);
     this->source_port   = new String(source_port);
     this->dest_ip       = new String(dest_ip);
     this->dest_port     = new String(dest_port);
-    cout << "source port filled in TCP constructor with: " << this->source_port->GetStr() << endl;
+    cout << "Port: " << this->source_port->GetStr() << " buffer: " << recvbuflen << endl;
 
 }
 
@@ -38,7 +44,6 @@ int TCP::init_socket(void)
 
     MasterSocket = INVALID_SOCKET;
     result = NULL;
-    recvbuflen = DEFAULT_BUFLEN;
 
     // Initialize Winsock
     iResult = WSAStartup(MAKEWORD(2,2), &wsaData);

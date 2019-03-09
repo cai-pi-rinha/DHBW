@@ -11,14 +11,15 @@ class TCP_server : public TCP
         SOCKET ClientSocket = INVALID_SOCKET;
 
 
-        int init_socket_old(void);
         int wait_for_query(void);
-        int send_tcp(String* data);
         int wait_for_receive();
+        int process_data();
+        int send_tcp(String* data);
+        int terminate_connection(void);
 
     public:
-        TCP_server();
-        TCP_server(const char* port);
+        TCP_server(int buffer_size = DEFAULT_BUFLEN);
+        TCP_server(const char* port, int buffer_size = DEFAULT_BUFLEN);
         virtual ~TCP_server();
         TCP_server(const TCP_server& other);
         int start_server(void);
