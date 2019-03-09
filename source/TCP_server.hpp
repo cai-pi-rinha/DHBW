@@ -8,12 +8,16 @@
 class TCP_server : public TCP
 {
     private:
-        int init_socket(void);
+        SOCKET ClientSocket = INVALID_SOCKET;
+
+
+        int init_socket_old(void);
         int send_tcp(String* data);
         String* receive_polling(void);
 
     public:
         TCP_server();
+        TCP_server(const char* port);
         virtual ~TCP_server();
         TCP_server(const TCP_server& other);
         int start_server(void);

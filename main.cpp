@@ -8,7 +8,7 @@ using namespace std;
 int main()
 {
     cout << "Hello world!" << endl;
-    TCP_server mein_server;
+    TCP_server mein_server("55555");
     mein_server.start_server();
     return 0;
 }
