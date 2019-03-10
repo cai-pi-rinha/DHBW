@@ -9,32 +9,34 @@ void DestroyReceiveBuffer(void* pv)
 
 TCP::TCP(int buffer_size)
 {
-    this->source_ip     = new String("127.0.0.1");
-    this->source_port   = new String(DEFAULT_PORT);
-    this->dest_ip       = new String("127.0.0.1");
-    this->dest_port     = new String(DEFAULT_PORT);
-    cout << "source port filled in TCP std-constructor with: " << source_port->GetStr() << endl;
+    master_ip   = new String(DEFAULT_IP);
+    master_port = new String(DEFAULT_PORT);
+    cout << "port filled in TCP std-constructor with: " << master_port->GetStr() << endl;
     recvbuflen = buffer_size;
     receive_buffer_list = *(new DList(&DestroyReceiveBuffer));
 }
 
-TCP::TCP(const char* source_ip, const char* source_port, const char* dest_ip, const char* dest_port, int buffer_size)
+TCP::TCP(const char* ip, const char* port, int buffer_size)
     : TCP(buffer_size) // call the main TCP constructor and subsequently make a few changes
 {
-    this->source_ip     = new String(source_ip);
-    this->source_port   = new String(source_port);
-    this->dest_ip       = new String(dest_ip);
-    this->dest_port     = new String(dest_port);
-    cout << "Port: " << this->source_port->GetStr() << " buffer: " << recvbuflen << endl;
+    if(ip)
+    {
+        delete(master_ip);
+        master_ip = new String(ip);
+    }
+    if(port)
+    {
+        delete(master_port);
+        master_port = new String(port);
+    }
+    cout << "Port: " << master_port->GetStr() << " buffer: " << recvbuflen << endl;
 
 }
 
 TCP::~TCP()
 {
-    delete(source_ip);
-    delete(source_port);
-    delete(dest_ip);
-    delete(dest_port);
+    delete(master_ip);
+    delete(master_port);
 }
 
 TCP::TCP(const TCP& other)
@@ -45,7 +47,7 @@ TCP::TCP(const TCP& other)
 int TCP::init_socket(void)
 {
     cout << "init socket" << endl;
-
+    int iResult = 0;
     MasterSocket = INVALID_SOCKET;
     result = NULL;
 
@@ -60,11 +62,12 @@ int TCP::init_socket(void)
     hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_protocol = IPPROTO_TCP;
-    hints.ai_flags = AI_PASSIVE;    // TODO: steht beim client nicht dabei
+    hints.ai_flags = AI_PASSIVE;    // socket will be used in a call to the bind function ~> bind() bind function associates a local address with a socket ~> TODO: possible to connect to a remote server??
 
     // Resolve the server address and port
     // TODO: statt NULL steht beim client hier argv[1]
-    iResult = getaddrinfo(NULL, source_port->GetStr(), &hints, &result);
+    // old: iResult = getaddrinfo(NULL, source_port->GetStr(), &hints, &result);
+    iResult = getaddrinfo(master_ip->GetStr(), master_port->GetStr(), &hints, &result);
     if ( iResult != 0 ) {
         printf("getaddrinfo failed with error: %d\n", iResult);
         WSACleanup();

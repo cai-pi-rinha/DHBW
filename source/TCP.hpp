@@ -19,20 +19,18 @@
 
 #define DEFAULT_BUFLEN 512
 #define DEFAULT_PORT "27015"
+#define DEFAULT_IP "127.0.0.1"
 
 using namespace std;
 
 class TCP
 {
     protected:
-        String* source_ip;
-        String* source_port;
-        String* dest_ip;
-        String* dest_port;
+        String* master_ip;
+        String* master_port;
 
         DList receive_buffer_list;
         WSADATA wsaData;
-        int iResult;
         SOCKET MasterSocket;    // first Socket created (eg. listen-socket of server or communication socket of client)
         struct addrinfo* result;
         struct addrinfo hints;
@@ -48,7 +46,7 @@ class TCP
 
     public:
         TCP(int buffer_size=DEFAULT_BUFLEN);
-        TCP(const char* source_ip, const char* source_port, const char* dest_ip, const char* dest_port, int buffer_size);
+        TCP(const char* ip, const char* port, int buffer_size);
         virtual ~TCP();
         TCP(const TCP& other);
 

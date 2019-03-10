@@ -9,7 +9,7 @@ TCP_server::TCP_server(int buffer_size)
 
 }
 TCP_server::TCP_server(const char* port, int buffer_size)
-    : TCP("", port, "", "", buffer_size)
+    : TCP(NULL, port, buffer_size)
 {
 
 }
@@ -27,7 +27,7 @@ TCP_server::TCP_server(const TCP_server& other)
 int TCP_server::wait_for_query(void)
 {
     freeaddrinfo(result);
-
+    int iResult = 0;
     iResult = listen(MasterSocket, SOMAXCONN);
     if (iResult == SOCKET_ERROR) {
         printf("listen failed with error: %d\n", WSAGetLastError());
@@ -72,8 +72,8 @@ int TCP_server::start_server(void)
     String welcome_msg("Buenos dias senor(a)!\n");
     do
     {
-    init_socket();
-    wait_for_query();
+        init_socket();
+        wait_for_query();
 
         cout << "waiting for something to do..." << endl;
         wait_for_receive(&ClientSocket);

@@ -7,10 +7,11 @@
 class TCP_client : public TCP
 {
     private:
+        int connect_socket(void);
 
     public:
         TCP_client(int buffer_size=DEFAULT_BUFLEN);
-        TCP_client(const char* source_ip, const char* source_port, const char* dest_ip, const char* dest_port, int buffer_size=DEFAULT_BUFLEN);
+        TCP_client(const char* ip, const char* port, int buffer_size=DEFAULT_BUFLEN);
         virtual ~TCP_client();
         TCP_client(const TCP_client& other);
 
