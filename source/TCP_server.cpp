@@ -24,6 +24,31 @@ TCP_server::TCP_server(const TCP_server& other)
     //copy ctor
 }
 
+int TCP_server::create_socket_and_bind(void)
+{
+    int iResult = SOCKET_ERROR;
+    // Create a SOCKET for connecting to server
+    MasterSocket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
+    if (MasterSocket == INVALID_SOCKET) {
+        //printf("socket failed with error: %ld\n", WSAGetLastError());
+        cout << "socket failed with error: " << WSAGetLastError() << endl;
+        freeaddrinfo(result);
+        WSACleanup();
+        return 1;
+    }
+
+    // Setup the TCP listening socket
+    iResult = bind( MasterSocket, result->ai_addr, (int)result->ai_addrlen);
+    if (iResult == SOCKET_ERROR) {
+        printf("bind failed with error: %d\n", WSAGetLastError());
+        freeaddrinfo(result);
+        closesocket(MasterSocket);
+        WSACleanup();
+        return 1;
+    }
+    return 0;
+}
+
 int TCP_server::wait_for_query(void)
 {
     freeaddrinfo(result);
@@ -66,13 +91,14 @@ int TCP_server::process_data()  /** print received data onto the screen */
 
 }
 
-int TCP_server::start_server(void)
+int TCP_server::dummy_server(void)
 {
     int dummy_counter = 0;
     String welcome_msg("Buenos dias senor(a)!\n");
     do
     {
         init_socket();
+        create_socket_and_bind();
         wait_for_query();
 
         cout << "waiting for something to do..." << endl;

@@ -10,7 +10,7 @@ class TCP_server : public TCP
     private:
         SOCKET ClientSocket = INVALID_SOCKET;
 
-
+        int create_socket_and_bind(void);
         int wait_for_query(void);
         int process_data();
 
@@ -19,7 +19,7 @@ class TCP_server : public TCP
         TCP_server(const char* ip, const char* port, int buffer_size = DEFAULT_BUFLEN);
         virtual ~TCP_server();
         TCP_server(const TCP_server& other);
-        int start_server(void);
+        int dummy_server(void);
 
     protected:
 };

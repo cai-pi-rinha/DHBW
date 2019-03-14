@@ -8,6 +8,7 @@ class TCP_client : public TCP
 {
     private:
         int connect_socket(void);
+        void process_data(void);
 
     public:
         TCP_client(int buffer_size=DEFAULT_BUFLEN);

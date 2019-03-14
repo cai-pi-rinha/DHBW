@@ -64,30 +64,9 @@ int TCP::init_socket(void)
 
     // Resolve the server address and port
     // TODO: statt NULL steht beim client hier argv[1]
-    // old: iResult = getaddrinfo(NULL, source_port->GetStr(), &hints, &result);
     iResult = getaddrinfo(master_ip->GetStr(), master_port->GetStr(), &hints, &result);
     if ( iResult != 0 ) {
         printf("getaddrinfo failed with error: %d\n", iResult);
-        WSACleanup();
-        return 1;
-    }
-
-    // Create a SOCKET for connecting to server
-    MasterSocket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
-    if (MasterSocket == INVALID_SOCKET) {
-        //printf("socket failed with error: %ld\n", WSAGetLastError());
-        cout << "socket failed with error: " << WSAGetLastError() << endl;
-        freeaddrinfo(result);
-        WSACleanup();
-        return 1;
-    }
-
-    // Setup the TCP listening socket
-    iResult = bind( MasterSocket, result->ai_addr, (int)result->ai_addrlen);
-    if (iResult == SOCKET_ERROR) {
-        printf("bind failed with error: %d\n", WSAGetLastError());
-        freeaddrinfo(result);
-        closesocket(MasterSocket);
         WSACleanup();
         return 1;
     }
@@ -165,5 +144,5 @@ int TCP::terminate_connection(SOCKET* destinationSocket)
 
 void TCP::print_id(void)
 {
-    cout << "Socket ID: " << master_ip->GetStr() << ":" << master_port->GetStr() << "Buffer size: " << recvbuflen << endl;
+    cout << "Socket ID: " << master_ip->GetStr() << ":" << master_port->GetStr() << " Buffer size: " << recvbuflen << endl;
 }

@@ -3,13 +3,13 @@
 TCP_client::TCP_client(int buffer_size)
     : TCP(buffer_size)
 {
-    //ctor
+    print_id();
 }
 
 TCP_client::TCP_client(const char* ip, const char* port, int buffer_size)
     : TCP(ip, port, buffer_size)
 {
-
+    print_id();
 }
 
 TCP_client::~TCP_client()
@@ -24,26 +24,20 @@ TCP_client::TCP_client(const TCP_client& other)
 
 int TCP_client::dummy_client(void)
 {
-    String dummy_message("how are you");
+    int iResult = 0;
+    String dummy_message("how are you\r\n");
     init_socket();
-
-    connect_socket();
-    send_tcp(&dummy_message, &MasterSocket);
-    wait_for_receive(&MasterSocket);
-
+    iResult = connect_socket();
+    while(!iResult)
     {
-        // process data in DList; ex. print it:
-        cout << "received following data: " << endl;
-        Iterator* read_data = receive_buffer_list.MakeIterator();
-        do
-        {
-            cout << (((char*)read_data->Current())+4);
-            // if last element in list: check first 4 bytes for length of data within this buffer-packet
-        }while(read_data->Next());
-        receive_buffer_list.Empty();
-        delete(read_data);
-        cout << endl;
+        cout << "press any key to continue ..." << endl;
+        std::cin.ignore();
+        iResult = send_tcp(&dummy_message, &MasterSocket);
+        iResult = iResult || wait_for_receive(&MasterSocket);
+        process_data();
     }
+
+
     terminate_connection(&MasterSocket);
 
 
@@ -83,4 +77,19 @@ int TCP_client::connect_socket(void)
         return 1;
     }
     return 0;
+}
+
+void TCP_client::process_data(void)
+{
+    // process data in DList; ex. print it:
+    cout << "received following data: " << endl;
+    Iterator* read_data = receive_buffer_list.MakeIterator();
+    do
+    {
+        cout << (((char*)read_data->Current())+4);
+        // if last element in list: check first 4 bytes for length of data within this buffer-packet
+    }while(read_data->Next());
+    receive_buffer_list.Empty();
+    delete(read_data);
+    cout << endl;
 }
