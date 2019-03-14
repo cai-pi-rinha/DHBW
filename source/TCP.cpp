@@ -11,7 +11,6 @@ TCP::TCP(int buffer_size)
 {
     master_ip   = new String(DEFAULT_IP);
     master_port = new String(DEFAULT_PORT);
-    cout << "port filled in TCP std-constructor with: " << master_port->GetStr() << endl;
     recvbuflen = buffer_size;
     receive_buffer_list = *(new DList(&DestroyReceiveBuffer));
 }
@@ -29,7 +28,6 @@ TCP::TCP(const char* ip, const char* port, int buffer_size)
         delete(master_port);
         master_port = new String(port);
     }
-    cout << "Port: " << master_port->GetStr() << " buffer: " << recvbuflen << endl;
 
 }
 
@@ -163,4 +161,9 @@ int TCP::terminate_connection(SOCKET* destinationSocket)
     WSACleanup();
 
     return 0;
+}
+
+void TCP::print_id(void)
+{
+    cout << "Socket ID: " << master_ip->GetStr() << ":" << master_port->GetStr() << "Buffer size: " << recvbuflen << endl;
 }

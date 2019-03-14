@@ -49,6 +49,7 @@ class TCP
         TCP(const char* ip, const char* port, int buffer_size);
         virtual ~TCP();
         TCP(const TCP& other);
+        void print_id(void);
 
 
     protected:

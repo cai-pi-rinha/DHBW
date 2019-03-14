@@ -6,12 +6,12 @@ using namespace std;
 TCP_server::TCP_server(int buffer_size)
     : TCP(buffer_size)
 {
-
+    print_id();
 }
-TCP_server::TCP_server(const char* port, int buffer_size)
-    : TCP(NULL, port, buffer_size)
+TCP_server::TCP_server(const char* ip, const char* port, int buffer_size)
+    : TCP(ip, port, buffer_size)
 {
-
+    print_id();
 }
 
 TCP_server::~TCP_server()

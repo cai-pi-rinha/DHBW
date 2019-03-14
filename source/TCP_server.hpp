@@ -16,7 +16,7 @@ class TCP_server : public TCP
 
     public:
         TCP_server(int buffer_size = DEFAULT_BUFLEN);
-        TCP_server(const char* port, int buffer_size = DEFAULT_BUFLEN);
+        TCP_server(const char* ip, const char* port, int buffer_size = DEFAULT_BUFLEN);
         virtual ~TCP_server();
         TCP_server(const TCP_server& other);
         int start_server(void);
