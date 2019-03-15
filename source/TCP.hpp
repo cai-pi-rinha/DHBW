@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include "string.hpp"
 #include "DList.hpp"
+#include "comm_processor.hpp"
 // Need to link with Ws2_32.lib
 #pragma comment (lib, "Ws2_32.lib")
 
@@ -38,7 +39,8 @@ class TCP
         char recvbuf[DEFAULT_BUFLEN];
         int recvbuflen;
 
-        /* impossible to create a TCP-object */
+        comm_processor* comm_proc;   // used to execute a "receive and process data" or "process and send data"
+
         TCP(int buffer_size=DEFAULT_BUFLEN);
         TCP(const char* ip, const char* port, int buffer_size);
 
@@ -51,10 +53,6 @@ class TCP
         virtual ~TCP();
         TCP(const TCP& other);
         void print_id(void);
-
-
-    protected:
-
 };
 
 #endif // TCP_H
