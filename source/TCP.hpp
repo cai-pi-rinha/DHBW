@@ -53,6 +53,9 @@ class TCP
         virtual ~TCP();
         TCP(const TCP& other);
         void print_id(void);
+        String* get_ip(void){return master_ip;}
+        String* get_port(void){return master_port;}
+        int get_buffer_size(void){return recvbuflen;}
 };
 
 #endif // TCP_H

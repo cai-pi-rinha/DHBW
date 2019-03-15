@@ -77,6 +77,8 @@ int TCP_server::wait_for_query(void)
 
 int TCP_server::process_data()  /** print received data onto the screen */
 {
+    int http_header_code = 0;
+    /*
     // process data in DList; ex. print it:
     cout << "received following data: " << endl;
     Iterator* read_data = receive_buffer_list.MakeIterator();
@@ -88,34 +90,29 @@ int TCP_server::process_data()  /** print received data onto the screen */
     receive_buffer_list.Empty();
     delete(read_data);
     cout << endl;
+    */
 
+    /* automatically start the correct processing-function (HTTP/FTP/...) */
+    http_header_code = comm_proc->read_and_process_data(&ClientSocket);
+    return http_header_code;
 }
 
-int TCP_server::dummy_server(void)
+int TCP_server::start_tcp_server()
 {
-    int dummy_counter = 0;
-    String welcome_msg("Buenos dias senor(a)!\n");
-    do
-    {
-        init_socket();
-        create_socket_and_bind();
-        wait_for_query();
+    int return_value = 0;
+    return_value = return_value || init_socket();
+    return_value = return_value || create_socket_and_bind();
+    return_value = return_value || wait_for_query();
+    if(return_value)
+        return -1;
 
-        cout << "waiting for something to do..." << endl;
-        wait_for_receive(&ClientSocket);
-        process_data();
+    return_value = process_data();  /* returns a HTTP_header code */
 
-        dummy_counter = (dummy_counter+1)&0xf;
-        if (dummy_counter == 0)
-            dummy_counter = 1;
-        for(int i=0; i<dummy_counter; i++)
-            send_tcp(&welcome_msg, &ClientSocket);
-        terminate_connection(&ClientSocket);
+    terminate_connection(&ClientSocket);
 
-    }while(1);
-
-    return 0;
+    return return_value;
 }
+
 
 
 

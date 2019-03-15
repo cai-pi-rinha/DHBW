@@ -14,12 +14,14 @@ class TCP_server : public TCP
         int wait_for_query(void);
         int process_data();
 
+    protected:
+        int start_tcp_server(void);
+
     public:
         TCP_server(int buffer_size = DEFAULT_BUFLEN);
         TCP_server(const char* ip, const char* port, int buffer_size = DEFAULT_BUFLEN);
         virtual ~TCP_server();
         TCP_server(const TCP_server& other);
-        int dummy_server(void);
 
     protected:
 };
