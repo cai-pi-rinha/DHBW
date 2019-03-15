@@ -38,6 +38,9 @@ class TCP
         char recvbuf[DEFAULT_BUFLEN];
         int recvbuflen;
 
+        /* impossible to create a TCP-object */
+        TCP(int buffer_size=DEFAULT_BUFLEN);
+        TCP(const char* ip, const char* port, int buffer_size);
 
         int init_socket(void); /** contains creation of socket() + call of bind() */
         int wait_for_receive(SOCKET* ClientSocket);
@@ -45,8 +48,6 @@ class TCP
         int terminate_connection(SOCKET* destinationSocket);
 
     public:
-        TCP(int buffer_size=DEFAULT_BUFLEN);
-        TCP(const char* ip, const char* port, int buffer_size);
         virtual ~TCP();
         TCP(const TCP& other);
         void print_id(void);
