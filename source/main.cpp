@@ -113,7 +113,6 @@ int main()
 			cout << "String an Stelle" << i << ": " << ((String*)Liste1.GetAt(i))->GetStr() << endl;
 	}
 
-
 	//oprator []
 	i = 2;
 	if (Liste1[i])
@@ -123,7 +122,7 @@ int main()
 
 	//Test InsertAt
 	String String6 = "InsertAt String";
-	i = 3;
+	i = 2;
 	cout << "\n\n\nTest InsertAt: Insert an Stelle "<< i << endl;
 	Liste1.InsertAt(i, &String6);
 	Iterator* it3 = Liste1.MakeIterator();
@@ -158,6 +157,8 @@ int main()
 
 	//das geht noch nicht! stürzt ab weil iterator wo steht wo er nicht sollte
 	/*Iterator* it1 = Liste1.MakeIterator();
+	Liste1.Empty();
+	Liste1.Insert(&String1);
 	if (it1->Current())
 	{
 		do {
