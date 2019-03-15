@@ -173,6 +173,27 @@ String& String::operator+=(const String& rccoStr)
 	return *this;
 }
 
+String& String::operator+=(char* rccoObj)
+{
+    if (this && rccoObj)
+	{
+	    int iNewLen = 0;
+	    while(rccoObj[iNewLen] != 0) /* count chars */
+            iNewLen++;
+        iNewLen += m_ilength;
+
+        char* pszNew = new char[iNewLen+1];
+        Strcpy(pszNew, m_pszStr);
+        Strcpy(pszNew+m_ilength, rccoObj);
+        pszNew[iNewLen] = 0;    /* binary zero at end of string */
+
+        delete[] m_pszStr;
+		m_pszStr = pszNew;
+		setLength();
+	}
+	return *this;
+}
+
 
 String&	String::Cut(int iStartIndex, int iStopIndex)
 {

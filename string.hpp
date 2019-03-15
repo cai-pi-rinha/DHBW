@@ -69,7 +69,7 @@ public:
 		/*
 		ersetzt den char an stelle i durch cNew, wenn es geklappt hat wird true zurückgegeben, sonst false
 		*/
-	String& String::operator=(const char* pszBuf);
+	String& 	   operator=(const char* pszBuf);
 	String&        operator=(const String& rccoObj);
 	/*
 	Zuweisung
@@ -86,6 +86,7 @@ public:
 	bool           operator>(const String& rccoObj);
 	bool           operator<(const String& rccoObj);
 	String& 	   operator+=(const String& rccoObj);
+	String& 	   operator+=(char* rccoObj);
 		/*
 		String an jetzigen String anhängen. Bsp: Gustav += Gans --> GustavGans
 		*/
