@@ -1,13 +1,14 @@
 #include"dlist_iteratorImp.hpp"
 #include "DList.hpp"
 
-Dlist_IteratorImp::Dlist_IteratorImp(const DList& owner) : IteratorImp()//doppelpunkt ruft konstruktor der basisklasse auf (passiert sowieso)
+Dlist_IteratorImp::Dlist_IteratorImp(const DList& owner)
+	:IteratorImp(owner)//doppelpunkt ruft konstruktor der basisklasse auf (passiert sowieso)
 {
 	//konstruktor ruft als erstes konstruktor von basisklasse auf
 	m_current = owner.GetFirst();
 }
 
-Dlist_IteratorImp::Dlist_IteratorImp(const Dlist_IteratorImp& DlistIt) : IteratorImp(*m_owner)
+Dlist_IteratorImp::Dlist_IteratorImp(const Dlist_IteratorImp& DlistIt) : IteratorImp(DlistIt.getOwner())
 {
 	
 	m_current = DlistIt.m_current;

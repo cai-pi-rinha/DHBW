@@ -3,17 +3,19 @@
 
 
 class ContainerInterface;
+
+
+
 class IteratorImp
 {
 private:
-
+	const ContainerInterface& m_owner;	//referenzzuweisung kann nur bei der Initialisierung stattfinden(siehe .cpp)
 
 protected:
-	const ContainerInterface* m_owner = 0;	//is used in copy constructor of Dlist_iteratorImp
-	IteratorImp(const ContainerInterface& owner);
-	IteratorImp();			//muss weg! ich weiß nur nich was man mit owner macht und wie man den in dlistiterator übergibt
-	IteratorImp(const IteratorImp& implementation);
 
+	IteratorImp(const ContainerInterface& owner);
+	IteratorImp(const IteratorImp& implementation);
+	const ContainerInterface& getOwner() const { return m_owner; };
 public:
 	virtual IteratorImp* Clone() = 0;
 	virtual ~IteratorImp() = 0;

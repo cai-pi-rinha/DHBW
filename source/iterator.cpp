@@ -62,19 +62,15 @@ void* Iterator::Current()
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-IteratorImp::IteratorImp()
-{
-
-}
 
 IteratorImp::IteratorImp(const ContainerInterface& owner)
+	:m_owner(owner)
 {
-	m_owner = &owner;
 }
 
 IteratorImp::IteratorImp(const IteratorImp& impl)
+	:m_owner(impl.m_owner)	//initialiserungliste (wird direkt festgelegt)
 {
-	m_owner = impl.m_owner;
 }
 
 IteratorImp::~IteratorImp()

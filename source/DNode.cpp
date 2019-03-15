@@ -5,11 +5,11 @@ typedef void (*DestroyFuncDNode)(void*);
 
 // constructor
 DNode::DNode(DList* myListPtr)  /** create a new and empty list element */
+	:payload(NULL),			//wäre das gleiche wie in geschweifter Klammer zu initialisieren
+	 prev(NULL),
+	 next(NULL),
+	 myList(myListPtr)
 {
-    payload     = NULL;
-    prev        = NULL;
-    next        = NULL;
-    myList      = myListPtr;
 }
 
 DNode::DNode(void* payload, DNode* prev, DNode* next, DList* myListPtr) /** create a new list element with (payload, pointer to prev & next element) */
