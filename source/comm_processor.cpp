@@ -64,6 +64,7 @@ int http_processor::read(SOCKET* socket, String* http_message)
                 *http_message += buffer;
         }
     }while(result == buffer_length);
+    free(buffer);
 
     int position_of_header_termination = 4 + http_message->FindString("\r\n\r\n");
     if( position_of_header_termination != http_message->Length() )
@@ -77,6 +78,7 @@ int http_processor::read_and_process_data(SOCKET* socket)
     /* HTTP_header_object header_obj; */
     String http_header = "";
     String http_body = "";
+    String http_response = "<!DOCTYPE html> <html> <body> <h1>My First Heading</h1> <p>My first paragraph.</p> </body> </html>";
     int error = 0;
     int content_length = 0;
     int return_code = 0;    /* return code depending on the received HTTP information */
@@ -101,10 +103,22 @@ int http_processor::read_and_process_data(SOCKET* socket)
     cout << "received header: " << http_header.GetStr() << endl;
     cout << "received body: " << http_body.GetStr() << endl;
 
+    /* send response */
+
+    send_data(socket, &http_response);
+
     return return_code;
 }
 
-int http_processor::send_data()
+int http_processor::send_data(SOCKET* DestinationSocket, String* data)
 {
+    int result = SOCKET_ERROR;
+    result = send( *DestinationSocket, data->GetStr(), data->Length(), 0 );
+    if (result == SOCKET_ERROR) {
+        printf("send failed with error: %d\n", WSAGetLastError());
+        closesocket(*DestinationSocket);
+        WSACleanup();
+        return 1;
+    }
     return 0;
 }

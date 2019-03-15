@@ -17,7 +17,7 @@ class comm_processor
         comm_processor(const comm_processor& other);
 
         virtual int read_and_process_data(SOCKET* socket) = 0;
-        virtual int send_data() = 0;
+        virtual int send_data(SOCKET* DestinationSocket, String* data) = 0;
 
 };
 
@@ -31,7 +31,7 @@ class http_processor : public comm_processor
         http_processor(const http_processor& other);
 
         int read_and_process_data(SOCKET* socket);
-        int send_data();
+        int send_data(SOCKET* DestinationSocket, String* data);
 };
 
 #endif // COMMPROCESSOR_H
