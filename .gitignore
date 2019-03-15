@@ -6,3 +6,7 @@ ignore all files (...) :
 !*readme*
 !*TCP*.cpp
 !*TCP*.hpp
+!*comm_processor*.cpp
+!*comm_processor*.hpp
+!*HTTP*.cpp
+!*HTTP*.hpp
