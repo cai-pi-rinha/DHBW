@@ -43,12 +43,12 @@ int HTTP_client::send(String* message)  /** executes comm_processor::write() */
 
 int HTTP_client::receive(void)      /** executes comm_processor::read() */
 {
-
+    return comm_proc->read(&MasterSocket);
 }
 
 t_HTTP_header HTTP_client::get_http_header(void)
 {
-
+    return ((http_processor*)comm_proc)->get_http_header();
 }
 
 int HTTP_client::terminate_connection()
