@@ -19,8 +19,10 @@ class HTTP_server : public TCP_server
         int start_server(void);
         int get_query(void);
         int process(void);
-        int send_response(void);
-        int send_alternative_response(String* message);
+        int send_response_and_terminate_conn(void);
+        int send_alternative_response_and_terminate_conn(String* message);
+        int terminate_client_connection(void);
+        int terminate_server_connection(void);
 
         t_HTTP_header get_http_header(void);
 

@@ -16,7 +16,8 @@ HTTP_server::HTTP_server(const char* ip, const char* port, int buffer_size)
 
 HTTP_server::~HTTP_server()
 {
-    //dtor
+    terminate_client_connection();
+    terminate_server_connection();
 }
 
 HTTP_server::HTTP_server(const HTTP_server& other)
@@ -39,14 +40,22 @@ int HTTP_server::process(void)      /** executes comm_processor::proccess() */
     return comm_proc->process();
 }
 
-int HTTP_server::send_response(void)/** executes comm_processor::write() */
+int HTTP_server::send_response_and_terminate_conn(void)/** executes comm_processor::write() */
 {
-    return comm_proc->write(&ClientSocket);
+    int error = 0;
+    error = comm_proc->write(&ClientSocket);
+    terminate_client_connection();
+
+    return error;
 }
 
-int HTTP_server::send_alternative_response(String* message) /** executes comm_processor::write() with a reply message different to the one processed */
+int HTTP_server::send_alternative_response_and_terminate_conn(String* message) /** executes comm_processor::write() with a reply message different to the one processed */
 {
-    return comm_proc->write(&ClientSocket, message);
+    int error = 0;
+    error = comm_proc->write(&ClientSocket, message);
+    terminate_client_connection();
+
+    return error;
 }
 
 t_HTTP_header HTTP_server::get_http_header(void)
@@ -55,4 +64,14 @@ t_HTTP_header HTTP_server::get_http_header(void)
      * 2) get the received HTTP header
      */
     return ((http_processor*)comm_proc)->get_http_header();
+}
+
+int HTTP_server::terminate_client_connection(void)
+{
+    return terminate_connection(&ClientSocket);
+}
+
+int HTTP_server::terminate_server_connection(void)
+{
+    return terminate_connection(&MasterSocket);
 }
