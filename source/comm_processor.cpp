@@ -69,9 +69,16 @@ String http_processor::read_string(SOCKET* socket)
     }while(result == buffer_length);
     free(buffer);
 
-    int position_of_header_termination = 4 + http_message.FindString("\r\n\r\n");
-    if( position_of_header_termination != http_message.Length() )
-        http_message.Cut(0, position_of_header_termination );
+    int position_of_header_termination = http_message.FindString("\r\n\r\n");
+    if(position_of_header_termination == -1)
+    {
+        http_message = "";
+        cout << "non HTTP-stream received" << endl;
+        return http_message;
+    }
+
+    if( position_of_header_termination+4 != http_message.Length() )
+        http_message.Cut(position_of_header_termination+4, http_message.Length() );
 
     return http_message;
 }
@@ -131,6 +138,8 @@ int http_processor::write(SOCKET* DestinationSocket, String* data)
     int error = 0;
     //error = write_string(DestinationSocket, &sent_header.to_String());  // TODO: implement HTTP functions with to_String()
     //error += write_string(DestinationSocket, &sent_body.to_String());
+    String deleteme = "hier koennte ihre Werbung stehen\r\n\r\n";
+    error = write_string(DestinationSocket, &deleteme); // TODO: deleteme
 
     if(error)
         return -1;
