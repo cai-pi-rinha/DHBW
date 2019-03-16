@@ -137,6 +137,11 @@ int http_processor::write(SOCKET* DestinationSocket, String* data)
     return 0;
 }
 
+void http_processor::set_http_header(t_HTTP_header sent_header)
+{
+    *(this->sent_header) = sent_header;
+}
+
 t_HTTP_header http_processor::get_http_header(void)
 {
     return *received_header;

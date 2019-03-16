@@ -31,7 +31,14 @@ int HTTP_client::start_client(void) /** init, start & connect TCP client */
 
 int HTTP_client::send(String* message)  /** executes comm_processor::write() */
 {
+    /* create HTTP header and add the message */
+    t_HTTP_header new_header;
+    // TODO: add the string message to the header
 
+    /* cast communication_processor to a HTTP_processor to replace the http_header by new_header */
+    ((http_processor*)comm_proc)->set_http_header(new_header);
+
+    return comm_proc->write(&MasterSocket);
 }
 
 int HTTP_client::receive(void)      /** executes comm_processor::read() */

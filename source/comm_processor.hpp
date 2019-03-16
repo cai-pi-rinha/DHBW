@@ -45,6 +45,7 @@ class http_processor : public comm_processor
         int process(void);
         int write(SOCKET* DestinationSocket, String* data = NULL);
 
+        void set_http_header(t_HTTP_header sent_header);
         t_HTTP_header get_http_header(void);
 };
 
