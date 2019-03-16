@@ -70,6 +70,7 @@ int String::FindChar(char cSearch, int iStartIndex) const
 		if (!found)
 			iRet = -1;
 	}
+	
 	return iRet;
 }
 
@@ -77,7 +78,7 @@ int String::FindChar(char cSearch, int iStartIndex) const
 int String::FindString(const char* pszSearchString, int iStartIndex) const
 {
 	int iRet = -1;
-	if (iStartIndex < m_ilength && iStartIndex >= 0 && this)
+	if(iStartIndex < m_ilength && iStartIndex >= 0 && this)
 	{
 		iRet = 0;
 		char* temp = m_pszStr + iStartIndex;
@@ -92,7 +93,7 @@ int String::FindString(const char* pszSearchString, int iStartIndex) const
 				searchString++;
 				stringStart++;
 			}
-			if (*searchString == '\0')
+			if(*searchString == '\0')
 				found = true;					//if we've made it to here, that means we found our string
 			else
 				iRet++;
@@ -193,7 +194,6 @@ String& String::operator+=(char* rccoObj)
 	}
 	return *this;
 }
-
 
 String&	String::Cut(int iStartIndex, int iStopIndex)
 {

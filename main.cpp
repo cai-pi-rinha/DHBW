@@ -1,6 +1,6 @@
 //Testprogramm
 
-#include "string.hpp"
+#include "source/string.hpp"
 #include <stdio.h>
 
 //kompilieren und direkt exe erzeugen mit namen der exe angebbar: >cl /Fe:test.exe string.cpp main.cpp
