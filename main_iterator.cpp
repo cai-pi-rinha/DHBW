@@ -1,11 +1,11 @@
 //Testprogramm
 
-#include "string.hpp"
+#include "source/string.hpp"
 #include <stdio.h>
 #include <iostream>
-#include "iterator.hpp"
-#include "dnode.hpp"
-#include "dlist.hpp"
+#include "source/iterator.hpp"
+#include "source/dnode.hpp"
+#include "source/dlist.hpp"
 //kompilieren und direkt exe erzeugen mit namen der exe angebbar: >cl /Fe:test.exe string.cpp main.cpp
 using namespace std;
 
