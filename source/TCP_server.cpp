@@ -75,42 +75,23 @@ int TCP_server::wait_for_query(void)
     return 0;
 }
 
-int TCP_server::process_data()  /** print received data onto the screen */
-{
-    int http_header_code = 0;
-    /*
-    // process data in DList; ex. print it:
-    cout << "received following data: " << endl;
-    Iterator* read_data = receive_buffer_list.MakeIterator();
-    do
-    {
-        cout << (((char*)read_data->Current())+4);
-        // if last element in list: check first 4 bytes for length of data within this buffer-packet
-    }while(read_data->Next());
-    receive_buffer_list.Empty();
-    delete(read_data);
-    cout << endl;
-    */
-
-    /* automatically start the correct processing-function (HTTP/FTP/...) */
-    http_header_code = comm_proc->read_and_process_data(&ClientSocket);
-    return http_header_code;
-}
-
-int TCP_server::start_tcp_server()
+int TCP_server::start_tcp_server()  /** starts server and listens for a query */
 {
     int return_value = 0;
-    return_value = return_value || init_socket();
-    return_value = return_value || create_socket_and_bind();
-    return_value = return_value || wait_for_query();
+
+    return_value = init_socket();
     if(return_value)
         return -1;
 
-    return_value = process_data();  /* returns a HTTP_header code */
+    return_value = create_socket_and_bind();
+    if(return_value)
+        return -1;
 
-    terminate_connection(&ClientSocket);
+    return_value = wait_for_query();
+    if(return_value)
+        return -1;
 
-    return return_value;
+    return 0;
 }
 
 

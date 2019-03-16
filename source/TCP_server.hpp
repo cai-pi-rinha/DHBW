@@ -8,13 +8,11 @@
 class TCP_server : public TCP
 {
     private:
-        SOCKET ClientSocket = INVALID_SOCKET;
-
         int create_socket_and_bind(void);
         int wait_for_query(void);
-        int process_data();
 
     protected:
+        SOCKET ClientSocket = INVALID_SOCKET;
         int start_tcp_server(void);
         TCP_server(int buffer_size = DEFAULT_BUFLEN);
         TCP_server(const char* ip, const char* port, int buffer_size = DEFAULT_BUFLEN);

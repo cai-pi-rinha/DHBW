@@ -24,15 +24,35 @@ HTTP_server::HTTP_server(const HTTP_server& other)
     //copy ctor
 }
 
-int HTTP_server::start_server(void)
+int HTTP_server::start_server(void) /** init & start TCP server; waits for query */
 {
-    int HTTP_header_code = 0;
-    do
-    {
-        HTTP_header_code = start_tcp_server();
-        cout << "received header code: " << HTTP_header_code << endl;
+    return start_tcp_server();
+}
 
-    }while(!HTTP_header_code);
+int HTTP_server::get_query(void)    /** executes comm_processor::read() */
+{
+    return comm_proc->read(&ClientSocket);
+}
 
-    return -1;
+int HTTP_server::process(void)      /** executes comm_processor::proccess() */
+{
+    return comm_proc->process();
+}
+
+int HTTP_server::send_response(void)/** executes comm_processor::write() */
+{
+    return comm_proc->write(&ClientSocket);
+}
+
+int HTTP_server::send_alternative_response(String* message) /** executes comm_processor::write() with a reply message different to the one processed */
+{
+    return comm_proc->write(&ClientSocket, message);
+}
+
+t_HTTP_header HTTP_server::get_http_header(void)
+{
+    /* 1) cast generic communication_processor into an HTTP processor  (as this is the HTTP_server class)
+     * 2) get the received HTTP header
+     */
+    return ((http_processor*)comm_proc)->get_http_header();
 }
