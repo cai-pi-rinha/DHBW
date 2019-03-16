@@ -16,6 +16,7 @@ class TCP_client : public TCP
         virtual ~TCP_client();
         TCP_client(const TCP_client& other);
 
+        int start_tcp_client(void);
         int dummy_client(void);
 
 };

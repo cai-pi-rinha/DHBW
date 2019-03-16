@@ -44,7 +44,7 @@ class TCP
         TCP(int buffer_size=DEFAULT_BUFLEN);
         TCP(const char* ip, const char* port, int buffer_size);
 
-        int init_socket(void); /** contains creation of socket() + call of bind() */
+        int init_socket(void); /** contains creation of socket */
         int wait_for_receive(SOCKET* ClientSocket);
         int send_tcp(String* data, SOCKET* DestinationSocket);
         int terminate_connection(SOCKET* destinationSocket);

@@ -19,7 +19,7 @@ class HTTP_client : public TCP_client
         int start_client(void);
         int send(String* message);
         int receive(void);
-        t_HTTP_header get_http_header(void)
+        t_HTTP_header get_http_header(void);
         int terminate_connection();
 };
 

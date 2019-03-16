@@ -14,7 +14,7 @@ TCP_client::TCP_client(const char* ip, const char* port, int buffer_size)
 
 TCP_client::~TCP_client()
 {
-    //dtor
+    terminate_connection(&MasterSocket);
 }
 
 TCP_client::TCP_client(const TCP_client& other)
@@ -22,12 +22,21 @@ TCP_client::TCP_client(const TCP_client& other)
     //copy ctor
 }
 
+int TCP_client::start_tcp_client(void)
+{
+    int error = 0;
+    init_socket();
+    error = connect_socket();
+
+    return error;
+}
+
 int TCP_client::dummy_client(void)
 {
     int iResult = 0;
     String dummy_message("how are you\r\n");
-    init_socket();
-    iResult = connect_socket();
+    start_tcp_client();
+
     while(!iResult)
     {
         cout << "press any key to continue ..." << endl;
@@ -37,9 +46,7 @@ int TCP_client::dummy_client(void)
         process_data();
     }
 
-
     terminate_connection(&MasterSocket);
-
 
     return 0;
 }

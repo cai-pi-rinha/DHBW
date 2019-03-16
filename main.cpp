@@ -4,6 +4,7 @@
 #include "source/TCP_server.hpp"
 #include "source/TCP_client.hpp"
 #include "HTTP_server.hpp"
+#include "HTTP_client.hpp"
 
 using namespace std;
 
@@ -21,11 +22,12 @@ int main()
     }*/
 
 
+    String demo_string = "hello world";
     HTTP_client mein_client("127.0.0.1","55554", 64);
     mein_client.start_client();
-    mein_client.send("Hello");
+    mein_client.send(&demo_string);
     mein_client.receive();
-    cout << "received information: " << mein_server.get_http_header().to_String() << endl;
+    cout << "received information: " << mein_client.get_http_header().to_String() << endl;
     mein_client.terminate_connection();
 
     return 0;

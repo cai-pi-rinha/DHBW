@@ -60,10 +60,9 @@ int TCP::init_socket(void)
     hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_protocol = IPPROTO_TCP;
-    hints.ai_flags = AI_PASSIVE;    // socket will be used in a call to the bind function ~> bind() bind function associates a local address with a socket ~> TODO: possible to connect to a remote server??
+    hints.ai_flags = AI_PASSIVE;    // TODO: socket will be used in a call to the bind function ~> bind() bind function associates a local address with a socket ~> TODO: possible to connect to a remote server??
 
     // Resolve the server address and port
-    // TODO: statt NULL steht beim client hier argv[1]
     iResult = getaddrinfo(master_ip->GetStr(), master_port->GetStr(), &hints, &result);
     if ( iResult != 0 ) {
         printf("getaddrinfo failed with error: %d\n", iResult);
