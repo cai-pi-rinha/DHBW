@@ -3,14 +3,14 @@
 #include "source/TCP.hpp"
 #include "source/TCP_server.hpp"
 #include "source/TCP_client.hpp"
-#include "HTTP_server.hpp"
-#include "HTTP_client.hpp"
+#include "source/HTTP_server.hpp"
+#include "source/HTTP_client.hpp"
 
 #define SERVER_1_CLIENT_0 0
 
 using namespace std;
 
-int main()
+int main_tcp()
 {
 
 #if SERVER_1_CLIENT_0 == 1
@@ -24,7 +24,7 @@ int main()
         cout << "received information: " << mein_server.get_http_header().to_String() << endl;
         mein_server.send_response_and_terminate_conn();
     }
-
+	
 #elif SERVER_1_CLIENT_0 == 0
     cout << "client started" << endl;
     String demo_string = "hello world";
