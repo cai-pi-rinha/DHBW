@@ -1,11 +1,13 @@
 #ifndef COMMPROCESSOR_H
 #define COMMPROCESSOR_H
 #include <winsock2.h>
+#include "HTTP_Header.hpp"
 
 class TCP;
 class String;
-class HTTP_Header{public: int from_String(String* x){return 0;} char* to_String(void){return 0;}};  // TODO: to be replaced by correct classes
+//class HTTP_Header{public: int from_String(String* x){return 0;} char* to_String(void){return 0;}};  // TODO: to be replaced by correct classes
 class HTTP_Body{public: int from_String(String* x){return 0;} char* to_String(void){return 0;}};
+
 
 typedef HTTP_Header t_HTTP_header;
 typedef HTTP_Body   t_HTTP_body;

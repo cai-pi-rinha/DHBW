@@ -30,8 +30,8 @@ String HTTP_Header::Creat_request_Line(String request_method_name, String reques
 void HTTP_Header::new_entry(String Token, String field_value, bool last)
 {
 	//ToDo: check if previos header has CRLF, if not, only then proceed
-	
-	
+
+
 	this->entry.header_field(Token, field_value);
 
 	if (last = 1)
@@ -49,7 +49,7 @@ void HTTP_Header::Complete_header_string(void)
 {
 	Iterator* new_it = Header_entrys.MakeIterator();
 	this->Complete_Header += "problem";
-	cout << (String)(((HTTP_Header_Entry*)new_it->Current())->header_entry_String()) << endl;
+	//cout << (String)(((HTTP_Header_Entry*)new_it->Current())->header_entry_String()) << endl;
 
 	/*do
 	{
